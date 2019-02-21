@@ -1,0 +1,10 @@
+#---header
+headerLogin= Login
+headerError = Error
+
+#---Lables
+labelUsuario = Usuario:
+labelPasword = Password:
+
+#--Botones 
+botonAceptar = Aceptar

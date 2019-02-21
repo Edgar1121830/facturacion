@@ -1,0 +1,61 @@
+package co.com.ges.modelo;
+
+import java.io.Serializable;
+import javax.persistence.*;
+
+
+/**
+ * The persistent class for the ESTADOCASO database table.
+ * 
+ */
+@Entity
+@Table(name="ESTADOCASO")
+public class Estadocaso implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id;
+
+	private boolean asignacion;
+
+	private boolean estado;
+
+	private String nombre;
+
+	public Estadocaso() {
+	}
+
+	public int getId() {
+		return this.id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public boolean getAsignacion() {
+		return this.asignacion;
+	}
+
+	public void setAsignacion(boolean asignacion) {
+		this.asignacion = asignacion;
+	}
+
+	public boolean getEstado() {
+		return this.estado;
+	}
+
+	public void setEstado(boolean estado) {
+		this.estado = estado;
+	}
+
+	public String getNombre() {
+		return this.nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+}

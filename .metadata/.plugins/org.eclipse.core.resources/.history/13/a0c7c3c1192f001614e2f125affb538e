@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/comf-template-consultas.xhtml">
+	<ui:define name="head">:: GES ::</ui:define>
+	<ui:define name="body">
+		<h:body>
+			<h:form>
+				<p:messages id="messages" globalOnly="true" autoUpdate="true" closable="true" showDetail="true" showSummary="true" />
+				<br /> <br />
+				<div align="center">
+					<p:tabView>
+						<p:tab title="#{msg.headerES}">
+							<p:panel style="width:950px; height:500px" id="panelGeneral" header="#{msg.headerES}" >
+								<div align="center">
+									<h:panelGrid columns="4" style="whit:920px; height:320">
+										<p:outputLabel for="idce" value="#{msg.labelIdCas}" />
+										<p:inputText id="idce" value="#{estc.esc.id}" disabled="true"></p:inputText>
+										<p:outputLabel for="idn" value="#{msg.labelNombre}" />
+										<p:inputText id="idn" value="#{estc.esc.nombre}" ></p:inputText> <br/>
+										<p:outputLabel for="sels" value="#{msg.labelEstado}" />
+										<p:selectOneMenu value="#{estc.esc.estado}" id="sels" style="width:150px">
+											<f:selectItem itemLabel="#{msg.labelSeleccione}" itemValue="0"/>
+											<f:selectItems value="#{estc.lienu}" var="l" itemValue="#{l.idComponente}" itemLabel="#{l.nombre}"/>
+										</p:selectOneMenu>
+										<p:selectOneMenu value="#{estc.esc.asignacion}" id="sels" style="width:150px">
+											<f:selectItem itemLabel="#{msg.labelSeleccione}" itemValue="0"/>
+											<f:selectItems value="#{estc.as}" var="a" itemValue="#{a.id}" itemLabel="#{a.nombre}"/>
+										</p:selectOneMenu>
+									</h:panelGrid>
+									<f:facet name="footer">
+										<div align="center">
+											<p:commandButton value="#{msg.botonGuarddar}" action="#{ad.create()}" update="@form,pest" ajax="false"/>
+										</div>
+									</f:facet>
+									<p:dataTable id="pest" var="" value="#{}" editable="true" style="margin-bottom:20px" emptyMessage="#{msg.labelNoReg}"
+										rows="10" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "	
+													 rowsPerPageTemplate="5,10,15,20" ajax="false">
+									   <p:ajax event="rowEdit" listener="#{ad.edit(pa)}" update="paised"/>
+									   <p:column headerText="#{msg.labelId}"  >
+													<h:outputText value="#{pa.id}" />
+										</p:column>
+								       <p:column headerText="#{msg.labelPais}">
+								           <p:cellEditor>
+								               <f:facet name="output"><h:outputText value="#{pa.nombre}" /></f:facet>
+								               <f:facet name="input"><p:inputText value="#{pa.nombre}" style="width:100%" label="#{msg.labelPais}"/></f:facet>
+								           </p:cellEditor>
+								       </p:column>
+								       <p:column headerText="#{msg.labelEditar}" >
+										<p:rowEditor>
+											</p:rowEditor> 
+									   </p:column>
+								   </p:dataTable>
+								</div>
+							</p:panel>
+						</p:tab>
+					</p:tabView>
+				</div>
+			</h:form>
+		</h:body>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,304 @@
+package co.com.ges.controller;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.component.datatable.DataTable;
+
+import co.com.ges.dto.OpcionesMenuUsuario;
+import co.com.ges.enums.AsignacionEnum;
+import co.com.ges.enums.EstadosEnum;
+import co.com.ges.modelo.Detalle;
+import co.com.ges.modelo.Estadocaso;
+import co.com.ges.modelo.Funcionario;
+import co.com.ges.modelo.Ruta;
+import co.com.ges.servicio.GesServicio;
+
+@ManagedBean(name="estc")
+@SessionScoped
+public class AdminEstaControl implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+
+	private Properties prop = new Properties();
+	private String user;
+	private Funcionario f = new Funcionario();
+	private DataTable dtActu;
+	private DataTable dtActuE;
+	private DataTable dtActuZ;
+	private List<EstadosEnum> lienu =new ArrayList<EstadosEnum>();
+	private Estadocaso esc = new Estadocaso(); 
+	private List<AsignacionEnum> as = new ArrayList<AsignacionEnum>(); 
+	private Integer codec = 0;
+	private List<Estadocaso> estl = new ArrayList<Estadocaso>();
+	private int codDet = 0;
+	private Detalle deta = new Detalle();
+	private List<Detalle> lisdte = new ArrayList<Detalle>();
+	private int codRuta= 0;
+	private Ruta ruta = new Ruta();
+	private List<Ruta> lisRut = new ArrayList<Ruta>();
+	
+	@EJB
+	GesServicio servicio;
+	
+	public AdminEstaControl() {
+		super();
+		this.cargarPropiedades();
+	}
+	
+	public void cargarPropiedades(){
+		prop = new Properties();
+		try{
+			prop.load(AdministracionControl.class.getResourceAsStream("mensajes.properties"));
+			user=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(LoginControl.AUTH_KEY);
+			f =(Funcionario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(LoginControl.USERS);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@PostConstruct
+	public void cargarPermisos(){
+		@SuppressWarnings("unchecked")
+		List<OpcionesMenuUsuario> opc = (List<OpcionesMenuUsuario>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("menu");
+		try{
+			dtActu = new DataTable();
+			dtActuE = new DataTable();
+			dtActuZ = new DataTable();
+			lienu.add(EstadosEnum.ACTIVO);
+			lienu.add(EstadosEnum.INACTIVO);
+			as.add(AsignacionEnum.SI);
+			as.add(AsignacionEnum.NO);
+			cargarDatos();
+//			for(OpcionesMenuUsuario o: opc){
+//				if((o.getIdMenu().compareTo(ComponentesMenu.CONTRATO.getIdComponente())==0) 
+//						&& (o.getPermisoCodigo().compareTo(PermisosMenu.ADMCONTRATRO.getIdPermiso().intValue())==0)){
+//					if((o.getIdMenu().compareTo(ComponentesMenu.CONTRATO.getIdComponente())==0) 
+//						&& (o.getPermisoCodigo().compareTo(PermisosMenu.SUMINISTROS.getIdPermiso().intValue())==0)){
+//						
+//					}
+//				}
+//			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void cargarDatos(){
+		try{
+			dtActu = new DataTable();
+			dtActuE = new DataTable();
+			dtActuZ = new DataTable();
+			codec = servicio.maxCodEC();
+			estl = servicio.listarEC();
+			codDet = servicio.maxCodDetalle();
+			lisdte = servicio.listarDetalle();
+			codRuta = servicio.maxCodRuta();
+			lisRut = servicio.listarRuta();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void limpiarDatos(){
+		esc = new Estadocaso();
+		deta = new Detalle();
+		ruta = new Ruta();
+		cargarDatos();
+	}
+	
+	public void crearEstaCaso(){
+		try{
+			if(esc!=null){
+				esc.setId(codec);
+				servicio.crearEC(esc);
+				limpiarDatos();
+    			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoGuaEC")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("erroCreaed")));
+		}
+	}
+	
+	public void editarEC(Estadocaso ec){
+		try{
+			if(ec.getNombre()!=null){
+				servicio.editarEC(ec);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoEditEC")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("erroCreaed")));
+				
+		}
+	}
+	
+	public void crearDetalle(){
+		try{
+			if((deta.getDescripcion()!=null && !deta.getDescripcion().equals("")) 
+					&& !deta.getValor().equals(BigDecimal.ZERO)){
+				deta.setId(codDet);
+				servicio.crearDetalle(deta);
+				limpiarDatos();
+    			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoGuaDet")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCreDEt")));
+		}
+	}
+	
+	public void editarDetalle(Detalle d){
+		try{
+			if((deta.getDescripcion()!=null && !deta.getDescripcion().equals("")) 
+					&& deta.getValor().equals(BigDecimal.ZERO)){
+				servicio.editarDetalle(d);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoEditEC")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("erroEdiDEt")));
+		}
+	}
+	
+	public void crearRuta(){
+		try{
+			if((ruta.getNombrebanco()!=null && !ruta.getNombrebanco().equals("")) 
+					&& (ruta.getNumero()!=null && !ruta.getNumero().equals(""))){
+				ruta.setId(codRuta);
+				servicio.crearRuta(ruta);
+				limpiarDatos();
+    			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoGuaBan")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCreBan")));
+		}
+	}
+	
+	public void editarRuta(Ruta r){
+		try{
+			if((ruta.getNombrebanco()!=null && !ruta.getNombrebanco().equals("")) 
+					&& (ruta.getNumero()!=null && !ruta.getNumero().equals(""))){
+				servicio.editarDetalle(ruta);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoEditBan")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("erroEdiBan")));
+		}
+	}
+	
+
+	public List<EstadosEnum> getLienu() {
+		return lienu;
+	}
+
+	public void setLienu(List<EstadosEnum> lienu) {
+		this.lienu = lienu;
+	}
+
+	public Estadocaso getEsc() {
+		return esc;
+	}
+
+	public void setEsc(Estadocaso esc) {
+		this.esc = esc;
+	}
+
+	public List<AsignacionEnum> getAs() {
+		return as;
+	}
+
+	public void setAs(List<AsignacionEnum> as) {
+		this.as = as;
+	}
+	
+	public Integer getCodec() {
+		return codec;
+	}
+
+	public void setCodec(Integer codec) {
+		this.codec = codec;
+	}
+
+	public List<Estadocaso> getEstl() {
+		return estl;
+	}
+
+	public void setEstl(List<Estadocaso> estl) {
+		this.estl = estl;
+	}
+
+	public int getCodDet() {
+		return codDet;
+	}
+
+	public void setCodDet(int codDet) {
+		this.codDet = codDet;
+	}
+
+	public Detalle getDeta() {
+		return deta;
+	}
+
+	public void setDeta(Detalle deta) {
+		this.deta = deta;
+	}
+
+	public List<Detalle> getLisdte() {
+		return lisdte;
+	}
+
+	public void setLisdte(List<Detalle> lisdte) {
+		this.lisdte = lisdte;
+	}
+
+	public int getCodRuta() {
+		return codRuta;
+	}
+
+	public void setCodRuta(int codRuta) {
+		this.codRuta = codRuta;
+	}
+
+	public Ruta getRuta() {
+		return ruta;
+	}
+
+	public void setRuta(Ruta ruta) {
+		this.ruta = ruta;
+	}
+
+	public List<Ruta> getLisRut() {
+		return lisRut;
+	}
+
+	public void setLisRut(List<Ruta> lisRut) {
+		this.lisRut = lisRut;
+	}
+
+}

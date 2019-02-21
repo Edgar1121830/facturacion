@@ -1,0 +1,470 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/comf-template-menu.xhtml">
+	<ui:define name="head">:: Contratacion ::</ui:define>
+	<ui:define name="body">
+		<h:body>
+			<h:form>
+				<p:messages id="messages" globalOnly="true" autoUpdate="true" closable="true" showDetail="true" showSummary="true" />
+				<br /> <br />
+				<div align="center">
+					<p:tabView>
+						<p:tab title="#{msg['headerContratacion']}" disabled="#{contrat.actSum}">
+							<p:panel style="width:950px; height:500px" id="panelGeneral" header="#{msg['headerContratacion']}" >
+								<div align="center">
+								<p:scrollPanel mode="native" style="width:920px;height:320px">
+										<h:panelGrid  columns="6" style="width:700px" id="panel" cellspacing="8" cellpadding="8">
+											<h:outputLabel value="#{msg['labelTipoPersona']}" />
+											<p:selectOneMenu value="#{contrat.cont.contNatuId}" id="selectNat" style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{contrat.lisNat}" var="n" itemLabel="#{n.natuNombre}" itemValue="#{n.natuSerial}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelConsecut']}" />
+											<p:inputMask value="#{contrat.cont.contNumCon}" maxlength="4" mask="?9999" id="numCon" style="width: 150px;" disabled="true"/>
+											<h:outputLabel value="#{msg['labelAnio']}" />
+											<p:inputMask value="#{contrat.cont.contAnio}" maxlength="4" mask="?9999" id="anio" style="width: 150px;" disabled="true"/>
+											<h:outputLabel value="#{msg['labelRazon']}"/>
+											<h:inputText value="#{contrat.cont.contNomCont}" id="nombre" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelTipIden']}"/>
+											<p:selectOneMenu value="#{contrat.cont.contTipIdentC}" id="selectTiId" style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{contrat.listTipDoc}" var="d" itemLabel="#{d.tidocNombre}" itemValue="#{d.tidocSerial}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelNumDocC']}"/>
+											<p:inputMask value="#{contrat.cont.contNumIdentC}" id="numDoc" mask="?99999999999" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelDigVer']}" />
+											<p:inputMask value="#{contrat.cont.contNumVeriC}" id="numVer" mask="?9" maxlength="1" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelDepen']}" />
+											<p:selectOneMenu value="#{contrat.cont.contDepen}" id="selectDep"  style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{contrat.listDepend}" var="de" itemLabel="#{de.dependNombre}" itemValue="#{de.dependId}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelInterv']}" />
+											<p:inputText value="#{contrat.cont.contNomInt}" id="inter"  style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelTipIden']}"/>
+											<p:selectOneMenu value="#{contrat.cont.contTipIdentI}" id="selectTiIdInt"  style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{contrat.listTipDoc}" var="d" itemLabel="#{d.tidocNombre}" itemValue="#{d.tidocSerial}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelNumDocI']}" />
+											<p:inputMask value="#{contrat.cont.contNumIdentI}" id="docint" mask="?99999999999" maxlength="9" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelTipInt']}" />
+											<p:selectOneMenu value="#{contrat.cont.contTipInterv}" id="selectTipInter"  style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{contrat.listTipInt}" var="i" itemLabel="#{i.tipintNombre}" itemValue="#{i.tipintSerial}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelVigencia']}" />
+											<p:inputMask value="#{contrat.cont.contVig}" id="vig" mask="?999" maxlength="3" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelValor']}" />
+											<p:inputMask value="#{contrat.cont.contValor}" id="val" mask="?99999999999" maxlength="11"  style="width: 150px;"/>
+											<p:outputLabel for="fecha" value="#{msg['labelFecha']}" />
+											<p:calendar id="fecha" value="#{contrat.cont.contFechaIni}" showOn="button" pattern="dd-MM-yyyy" mask="true"  style="width: 150px;"/>
+											<p:outputLabel for="fechaFin" value="#{msg['labelFechaFin']}" />
+											<p:calendar id="fechaFin" value="#{contrat.cont.contFechaFin}" showOn="button" pattern="dd-MM-yyyy"  mask="true" style="width: 150px;"/>
+											<p:outputLabel for="FechSuscip" value="#{msg['labelFechSuscip']}" />
+											<p:calendar id="FechSuscip" value="#{contrat.cont.contSuscrip}" showOn="button" pattern="dd-MM-yyyy" mask="true"  style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelPoliza']}" />
+											<p:selectOneMenu value="#{contrat.cont.contPoliza}" id="selectPoli" onchange="submit()"  valueChangeListener="#{contrat.activarCampos}"  style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue=""/>
+												<f:selectItems value="#{contrat.lisEst}" var="e" itemValue="#{e.idComponente}" itemLabel="#{e.nombre}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelAnticipo']}" />
+											<p:selectOneMenu value="#{contrat.cont.contAnti}" id="selectAnt" disabled="#{contrat.active}" onchange="submit()" valueChangeListener="#{contrat.activarCamposF}" style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{contrat.lisEst}" var="el" itemValue="#{el.idComponente}" itemLabel="#{el.nombre}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelPorcentaje']}" />
+											<p:inputMask value="#{contrat.cont.contPorcAnti}" id="por" mask="?99" maxlength="2" disabled="#{contrat.activedos}" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelValorAnt']}" />
+											<p:inputMask value="#{contrat.cont.contValorAnti}" id="valAnt" mask="?9999999999" maxlength="11" disabled="#{contrat.activedos}" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelCentro']}" />
+											<p:selectOneMenu value="#{contrat.cont.contCentroId}" id="selectCent" style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{contrat.listceco}" var="c" itemLabel="#{c.cecoCodigo}-#{c.cecoDescripcion}" itemValue="#{c.cecoCodigo}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelEstado']}" />
+											<p:inputText value="#{msg['labelNoLegalizado']}" id="selectEst" style="width: 150px;" disabled="true"></p:inputText>
+											<h:outputLabel value="#{msg['labelUrlSVN']}" />
+											<p:inputTextarea value="#{contrat.cont.contSevenet}" id="url"  style="width: 150px;"/>
+										</h:panelGrid>
+									</p:scrollPanel>
+									<f:facet name="footer">
+											<div align="center">
+												<h:outputLabel value="#{msg['labelObjeto']}" />
+												<p:inputTextarea value="#{contrat.cont.contObj}" id="obje"  style="width: 900px; heigth:65px;"/>
+												<br/><br/>
+												<p:commandButton value="#{msg['botonGuardar']}"	action="#{contrat.guardarContrato()}" update="panelGeneral" ajax="false"/>		
+											</div>
+										</f:facet>
+								</div>
+							</p:panel>
+						</p:tab>
+						<p:tab title="#{msg['headerServicios']}" disabled="#{contrat.actSer}">
+							<p:panel style="width:950px" id="panelServicios" header="#{msg['headerServicios']}">
+								<div align="center">
+									<p:scrollPanel mode="native" style="width:920px;height:320px">
+										<h:panelGrid  columns="6" style="width:700px" id="panelS" cellspacing="8" cellpadding="8">
+											<h:outputLabel value="#{msg['labelTipoPersona']}" />
+											<p:selectOneMenu value="#{servi.cont.contNatuId}" id="selectNatS" style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{servi.lisNat}" var="ni" itemLabel="#{ni.natuNombre}" itemValue="#{ni.natuSerial}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelConsecut']}" />
+											<p:inputMask value="#{servi.cont.contNumCon}" maxlength="4" mask="?9999" id="numConS" style="width: 150px;" disabled="true"/>
+											<h:outputLabel value="#{msg['labelAnio']}" />
+											<p:inputMask value="#{servi.cont.contAnio}" maxlength="4" mask="?9999" id="anioS" style="width: 150px;" disabled="true"/>
+											<h:outputLabel value="#{msg['labelRazon']}"/>
+											<h:inputText value="#{servi.cont.contNomCont}" id="nombreS" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelTipIden']}"/>
+											<p:selectOneMenu value="#{servi.cont.contTipIdentC}" id="selectTiIdS" style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{servi.listTipDoc}" var="d" itemLabel="#{d.tidocNombre}" itemValue="#{d.tidocSerial}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelNumDocC']}"/>
+											<p:inputMask value="#{servi.cont.contNumIdentC}" id="numDocS" mask="?99999999999" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelDigVer']}" />
+											<p:inputMask value="#{servi.cont.contNumVeriC}" id="numVerS" mask="?9" maxlength="1" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelDepen']}" />
+											<p:selectOneMenu value="#{servi.cont.contDepen}" id="selectDepS"  style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{servi.listDepend}" var="des" itemLabel="#{des.dependNombre}" itemValue="#{des.dependId}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelInterv']}" />
+											<p:inputText value="#{servi.cont.contNomInt}" id="interS"  style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelTipIden']}"/>
+											<p:selectOneMenu value="#{servi.cont.contTipIdentI}" id="selectTiIdIntS"  style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{servi.listTipDoc}" var="ds" itemLabel="#{ds.tidocNombre}" itemValue="#{ds.tidocSerial}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelNumDocI']}" />
+											<p:inputMask value="#{servi.cont.contNumIdentI}" id="docints" mask="?99999999999" maxlength="9" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelTipInt']}" />
+											<p:selectOneMenu value="#{servi.cont.contTipInterv}" id="selectTipInterS"  style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{servi.listTipInt}" var="i" itemLabel="#{i.tipintNombre}" itemValue="#{i.tipintSerial}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelVigencia']}" />
+											<p:inputMask value="#{servi.cont.contVig}" id="vigS" mask="?999" maxlength="3" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelValor']}" />
+											<p:inputText value="#{servi.cont.contValor}" id="valS" mask="?99999999999" maxlength="11"  style="width: 150px;"/>
+											<p:outputLabel for="fechaS" value="#{msg['labelFecha']}" />
+											<p:calendar id="fechaS" value="#{servi.cont.contFechaIni}" showOn="button" pattern="dd-MM-yyyy"  mask="true" style="width: 150px;"/>
+											<p:outputLabel for="fechaFinS" value="#{msg['labelFechaFin']}" />
+											<p:calendar id="fechaFinS" value="#{servi.cont.contFechaFin}" showOn="button" pattern="dd-MM-yyyy" mask="true"  style="width: 150px;"/>
+											<p:outputLabel for="FechSuscipS" value="#{msg['labelFechSuscip']}" />
+											<p:calendar id="FechSuscipS" value="#{servi.cont.contSuscrip}" showOn="button" pattern="dd-MM-yyyy" mask="true"  style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelPoliza']}" />
+											<p:selectOneMenu value="#{servi.cont.contPoliza}" id="selectPoliS" onchange="submit()"  valueChangeListener="#{servi.activarCampos}"  style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue=""/>
+												<f:selectItems value="#{servi.lisEst}" var="es" itemValue="#{es.idComponente}" itemLabel="#{es.nombre}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelAnticipo']}" />
+											<p:selectOneMenu value="#{servi.cont.contAnti}" id="selectAntS" disabled="#{servi.active}" onchange="submit()" valueChangeListener="#{servi.activarCamposF}" style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{servi.lisEst}" var="els" itemValue="#{els.idComponente}" itemLabel="#{els.nombre}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelPorcentaje']}" />
+											<p:inputMask value="#{servi.cont.contPorcAnti}" id="pors" mask="?99" maxlength="2" disabled="#{servi.activedos}" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelValorAnt']}" />
+											<p:inputMask value="#{servi.cont.contValorAnti}" id="valAnts" mask="?99999999" maxlength="11" disabled="#{servi.activedos}" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelCentro']}" />
+											<p:selectOneMenu value="#{servi.cont.contCentroId}" id="selectCents" style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{servi.listceco}" var="cs" itemLabel="#{cs.cecoCodigo}-#{cs.cecoDescripcion}" itemValue="#{cs.cecoCodigo}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelEstado']}" />
+											<p:inputText value="#{msg['labelNoLegalizado']}" id="selectEstS" style="width: 150px;" disabled="true"/>
+											<h:outputLabel value="#{msg['labelUrlSVN']}" />
+											<p:inputTextarea value="#{servi.cont.contSevenet}" id="urls"  style="width: 150px;"/>
+										</h:panelGrid>
+									</p:scrollPanel>
+									<f:facet name="footer">
+										<div align="center">
+											<h:outputLabel value="#{msg['labelObjeto']}" />
+											<p:inputTextarea value="#{servi.cont.contObj}" id="objes"  style="width: 900px; heigth:65px;"/>
+											<br/><br/>
+											<p:commandButton value="#{msg['botonGuardar']}"	action="#{servi.guardarServicio()}" update="panelServicios" ajax="false"/>		
+										</div>
+									</f:facet>
+								</div>
+							</p:panel>
+						</p:tab>
+						<p:tab title="#{msg['headerObra']}" disabled="#{contrat.actObra}">
+							<p:panel style="width:950px" id="panelObra" header="#{msg['headerObra']}">
+								<div align="center">
+									<p:scrollPanel mode="native" style="width:920px;height:320px">
+										<h:panelGrid  columns="6" style="width:700px" id="panelSe" cellspacing="8" cellpadding="8">
+											<h:outputLabel value="#{msg['labelTipoPersona']}" />
+											<p:selectOneMenu value="#{obra.cont.contNatuId}" id="selectNatSe" style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{obra.lisNat}" var="ns" itemLabel="#{ns.natuNombre}" itemValue="#{ns.natuSerial}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelConsecut']}" />
+											<p:inputMask value="#{obra.cont.contNumCon}" maxlength="4" mask="?9999" id="numConSe" style="width: 150px;" disabled="true"/>
+											<h:outputLabel value="#{msg['labelAnio']}" />
+											<p:inputMask value="#{obra.cont.contAnio}" maxlength="4" mask="?9999" id="anioSe" style="width: 150px;" disabled="true"/>
+											<h:outputLabel value="#{msg['labelRazon']}"/>
+											<h:inputText value="#{obra.cont.contNomCont}" id="nombreSe" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelTipIden']}"/>
+											<p:selectOneMenu value="#{obra.cont.contTipIdentC}" id="selectTiIdSe" style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{obra.listTipDoc}" var="dse" itemLabel="#{dse.tidocNombre}" itemValue="#{dse.tidocSerial}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelNumDocC']}"/>
+											<p:inputMask value="#{obra.cont.contNumIdentC}" id="numDocSe" mask="?99999999999" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelDigVer']}" />
+											<p:inputMask value="#{obra.cont.contNumVeriC}" id="numVerSe" mask="?9" maxlength="1" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelDepen']}" />
+											<p:selectOneMenu value="#{obra.cont.contDepen}" id="selectDepSe"  style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{obra.listDepend}" var="dese" itemLabel="#{dese.dependNombre}" itemValue="#{dese.dependId}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelInterv']}" />
+											<p:inputText value="#{obra.cont.contNomInt}" id="interSe"  style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelTipIden']}"/>
+											<p:selectOneMenu value="#{obra.cont.contTipIdentI}" id="selectTiIdIntSe"  style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{obra.listTipDoc}" var="dsi" itemLabel="#{dsi.tidocNombre}" itemValue="#{dsi.tidocSerial}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelNumDocI']}" />
+											<p:inputMask value="#{obra.cont.contNumIdentI}" id="docintSe" mask="?99999999999" maxlength="9" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelTipInt']}" />
+											<p:selectOneMenu value="#{obra.cont.contTipInterv}" id="selectTipInterSe"  style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{obra.listTipInt}" var="ie" itemLabel="#{ie.tipintNombre}" itemValue="#{ie.tipintSerial}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelVigencia']}" />
+											<p:inputMask value="#{obra.cont.contVig}" id="vigSe" mask="?999" maxlength="3" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelValor']}" />
+											<p:inputText value="#{obra.cont.contValor}" id="valSe" mask="?9999999999" maxlength="11"  style="width: 150px;"/>
+											<p:outputLabel for="fechaSe" value="#{msg['labelFecha']}" />
+											<p:calendar id="fechaSe" value="#{obra.cont.contFechaIni}" showOn="button" pattern="dd-MM-yyyy" mask="true"  style="width: 150px;"/>
+											<p:outputLabel for="fechaFinSe" value="#{msg['labelFechaFin']}" />
+											<p:calendar id="fechaFinSe" value="#{obra.cont.contFechaFin}" showOn="button" pattern="dd-MM-yyyy" mask="true"  style="width: 150px;"/>
+											<p:outputLabel for="FechSuscipSe" value="#{msg['labelFechSuscip']}" />
+											<p:calendar id="FechSuscipSe" value="#{obra.cont.contSuscrip}" showOn="button" pattern="dd-MM-yyyy" mask="true"  style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelPoliza']}" />
+											<p:selectOneMenu value="#{obra.cont.contPoliza}" id="selectPoliSe" onchange="submit()"  valueChangeListener="#{obra.activarCampos}"  style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue=""/>
+												<f:selectItems value="#{obra.lisEst}" var="ese" itemValue="#{ese.idComponente}" itemLabel="#{ese.nombre}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelAnticipo']}" />
+											<p:selectOneMenu value="#{obra.cont.contAnti}" id="selectAntSe" disabled="#{obra.active}" onchange="submit()" valueChangeListener="#{obra.activarCamposF}" style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{obra.lisEst}" var="ele" itemValue="#{ele.idComponente}" itemLabel="#{ele.nombre}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelPorcentaje']}" />
+											<p:inputMask value="#{obra.cont.contPorcAnti}" id="porse" mask="?99" maxlength="2" disabled="#{obra.activedos}" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelValorAnt']}" />
+											<p:inputMask value="#{obra.cont.contValorAnti}" id="valAntSe" mask="?9999999999" maxlength="11" disabled="#{obra.activedos}" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelCentro']}" />
+											<p:selectOneMenu value="#{obra.cont.contCentroId}" id="selectCentSe" style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{obra.listceco}" var="cse" itemLabel="#{cse.cecoCodigo}-#{cse.cecoDescripcion}" itemValue="#{cse.cecoCodigo}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelEstado']}" />
+											<p:inputText value="#{msg['labelNoLegalizado']}" id="selectEstSe" style="width: 150px;" disabled="true"/>
+											<h:outputLabel value="#{msg['labelUrlSVN']}" />
+											<p:inputTextarea value="#{obra.cont.contSevenet}" id="urlSe"  style="width: 150px;"/>
+										</h:panelGrid>
+									</p:scrollPanel>
+									<f:facet name="footer">
+										<div align="center">
+											<h:outputLabel value="#{msg['labelObjeto']}" />
+											<p:inputTextarea value="#{obra.cont.contObj}" id="objeSe"  style="width: 900px; heigth:65px;"/>
+											<br/><br/>
+											<p:commandButton value="#{msg['botonGuardar']}"	action="#{obra.guardarObra()}" update="panelObra" ajax="false"/>		
+										</div>
+									</f:facet>
+								</div>
+							</p:panel>
+						</p:tab>
+						<p:tab title="#{msg['headerConsultoria']}" disabled="#{contrat.actConsu}">
+							<p:panel style="width:950px" id="panelConsultoria" header="#{msg['headerConsultoria']}" >
+								<div align="center">
+									<p:scrollPanel mode="native" style="width:920px;height:320px">
+										<h:panelGrid  columns="6" style="width:700px" id="panelC" cellspacing="8" cellpadding="8">
+											<h:outputLabel value="#{msg['labelTipoPersona']}" />
+											<p:selectOneMenu value="#{consul.cont.contNatuId}" id="selectNatC" style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{consul.lisNat}" var="nc" itemLabel="#{nc.natuNombre}" itemValue="#{nc.natuSerial}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelConsecut']}" />
+											<p:inputMask value="#{consul.cont.contNumCon}" maxlength="4" mask="?9999" id="numConC" style="width: 150px;" disabled="true"/>
+											<h:outputLabel value="#{msg['labelAnio']}" />
+											<p:inputMask value="#{consul.cont.contAnio}" maxlength="4" mask="?9999" id="anioC" style="width: 150px;" disabled="true"/>
+											<h:outputLabel value="#{msg['labelRazon']}"/>
+											<h:inputText value="#{consul.cont.contNomCont}" id="nombreC" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelTipIden']}"/>
+											<p:selectOneMenu value="#{consul.cont.contTipIdentC}" id="selectTiIdC" style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{consul.listTipDoc}" var="dc" itemLabel="#{dc.tidocNombre}" itemValue="#{dc.tidocSerial}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelNumDocC']}"/>
+											<p:inputMask value="#{consul.cont.contNumIdentC}" id="numDocC" mask="?99999999999" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelDigVer']}" />
+											<p:inputMask value="#{consul.cont.contNumVeriC}" id="numVerC" mask="?9" maxlength="1" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelDepen']}" />
+											<p:selectOneMenu value="#{consul.cont.contDepen}" id="selectDepC"  style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{consul.listDepend}" var="dec" itemLabel="#{dec.dependNombre}" itemValue="#{dec.dependId}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelInterv']}" />
+											<p:inputText value="#{consul.cont.contNomInt}" id="interC"  style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelTipIden']}"/>
+											<p:selectOneMenu value="#{consul.cont.contTipIdentI}" id="selectTiIdIntC"  style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{consul.listTipDoc}" var="dco" itemLabel="#{dco.tidocNombre}" itemValue="#{dco.tidocSerial}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelNumDocI']}" />
+											<p:inputMask value="#{consul.cont.contNumIdentI}" id="docintC" mask="?99999999999" maxlength="9" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelTipInt']}" />
+											<p:selectOneMenu value="#{consul.cont.contTipInterv}" id="selectTipInterC"  style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{consul.listTipInt}" var="ic" itemLabel="#{ic.tipintNombre}" itemValue="#{ic.tipintSerial}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelVigencia']}" />
+											<p:inputMask value="#{consul.cont.contVig}" id="vigC" mask="?999" maxlength="3" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelValor']}" />
+											<p:inputText value="#{consul.cont.contValor}" id="valC" mask="?99999999999" maxlength="11"  style="width: 150px;"/>
+											<p:outputLabel for="fechaC" value="#{msg['labelFecha']}" />
+											<p:calendar id="fechaC" value="#{consul.cont.contFechaIni}" showOn="button" pattern="dd-MM-yyyy" mask="true"  style="width: 150px;"/>
+											<p:outputLabel for="fechaFinC" value="#{msg['labelFechaFin']}" />
+											<p:calendar id="fechaFinC" value="#{consul.cont.contFechaFin}" showOn="button" pattern="dd-MM-yyyy" mask="true"  style="width: 150px;"/>
+											<p:outputLabel for="FechSuscipC" value="#{msg['labelFechSuscip']}" />
+											<p:calendar id="FechSuscipC" value="#{consul.cont.contSuscrip}" showOn="button" pattern="dd-MM-yyyy" mask="true"  style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelPoliza']}" />
+											<p:selectOneMenu value="#{consul.cont.contPoliza}" id="selectPoliC" onchange="submit()"  valueChangeListener="#{consul.activarCampos}"  style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue=""/>
+												<f:selectItems value="#{consul.lisEst}" var="poc" itemValue="#{poc.idComponente}" itemLabel="#{poc.nombre}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelAnticipo']}" />
+											<p:selectOneMenu value="#{consul.cont.contAnti}" id="selectAntC" disabled="#{consul.active}" onchange="submit()" valueChangeListener="#{consul.activarCamposF}" style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{consul.lisEst}" var="anc" itemValue="#{anc.idComponente}" itemLabel="#{anc.nombre}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelPorcentaje']}" />
+											<p:inputMask value="#{consul.cont.contPorcAnti}" id="porC" mask="?99" maxlength="2" disabled="#{consul.activedos}" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelValorAnt']}" />
+											<p:inputMask value="#{consul.cont.contValorAnti}" id="valAntC" mask="?999999999" maxlength="11" disabled="#{consul.activedos}" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelCentro']}" />
+											<p:selectOneMenu value="#{consul.cont.contCentroId}" id="selectCentC" style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{consul.listceco}" var="ccc" itemLabel="#{ccc.cecoCodigo}-#{ccc.cecoDescripcion}" itemValue="#{ccc.cecoCodigo}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelEstado']}" />
+											<p:inputText value="#{msg['labelNoLegalizado']}" id="selectEstC" style="width: 150px;" disabled="true"></p:inputText>
+											<h:outputLabel value="#{msg['labelUrlSVN']}" />
+											<p:inputTextarea value="#{consul.cont.contSevenet}" id="urlC"  style="width: 150px;"/>
+										</h:panelGrid>
+									</p:scrollPanel>
+									<f:facet name="footer">
+										<div align="center">
+											<h:outputLabel value="#{msg['labelObjeto']}" />
+											<p:inputTextarea value="#{consul.cont.contObj}" id="objeC"  style="width: 900px; heigth:65px;"/>
+											<br/><br/>
+											<p:commandButton value="#{msg['botonGuardar']}"	action="#{consul.guardarConsultria()}" update="panelConsultoria" ajax="false"/>		
+										</div>
+									</f:facet>
+								</div>
+							</p:panel>
+						</p:tab>
+						<p:tab title="#{msg['headerInterventoria']}" disabled="#{contrat.actInter}">
+							<p:panel style="width:950px" id="panelInterventoria" header="#{msg['headerInterventoria']}" >
+								<div align="center">
+									<p:scrollPanel mode="native" style="width:920px;height:320px">
+										<h:panelGrid  columns="6" style="width:700px" id="panelIn" cellspacing="8" cellpadding="8">
+											<h:outputLabel value="#{msg['labelTipoPersona']}" />
+											<p:selectOneMenu value="#{inter.cont.contNatuId}" id="selectNatI" style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{inter.lisNat}" var="nin" itemLabel="#{nin.natuNombre}" itemValue="#{nin.natuSerial}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelConsecut']}" />
+											<p:inputMask value="#{inter.cont.contNumCon}" maxlength="4" mask="?9999" id="numConIn" style="width: 150px;" disabled="true"/>
+											<h:outputLabel value="#{msg['labelAnio']}" />
+											<p:inputMask value="#{inter.cont.contAnio}" maxlength="4" mask="?9999" id="anioIn" style="width: 150px;" disabled="true"/>
+											<h:outputLabel value="#{msg['labelRazon']}"/>
+											<h:inputText value="#{inter.cont.contNomCont}" id="nombreIn" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelTipIden']}"/>
+											<p:selectOneMenu value="#{inter.cont.contTipIdentC}" id="selectTiIdIn" style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{inter.listTipDoc}" var="din" itemLabel="#{din.tidocNombre}" itemValue="#{din.tidocSerial}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelNumDocC']}"/>
+											<p:inputMask value="#{inter.cont.contNumIdentC}" id="numDocIn" mask="?99999999999" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelDigVer']}" />
+											<p:inputMask value="#{inter.cont.contNumVeriC}" id="numVerIn" mask="?9" maxlength="1" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelDepen']}" />
+											<p:selectOneMenu value="#{inter.cont.contDepen}" id="selectDepIn"  style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{inter.listDepend}" var="dein" itemLabel="#{dein.dependNombre}" itemValue="#{dein.dependId}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelInterv']}" />
+											<p:inputText value="#{inter.cont.contNomInt}" id="interIn"  style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelTipIden']}"/>
+											<p:selectOneMenu value="#{inter.cont.contTipIdentI}" id="selectTiIdIntIn"  style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{inter.listTipDoc}" var="tin" itemLabel="#{tin.tidocNombre}" itemValue="#{tin.tidocSerial}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelNumDocI']}" />
+											<p:inputMask value="#{inter.cont.contNumIdentI}" id="docintIn" mask="?99999999999" maxlength="9" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelTipInt']}" />
+											<p:selectOneMenu value="#{inter.cont.contTipInterv}" id="selectTipInterIn"  style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{inter.listTipInt}" var="iin" itemLabel="#{iin.tipintNombre}" itemValue="#{iin.tipintSerial}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelVigencia']}" />
+											<p:inputMask value="#{inter.cont.contVig}" id="vigIn" mask="?999" maxlength="3" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelValor']}" />
+											<p:inputText value="#{inter.cont.contValor}" id="valIn" mask="?99999999999" maxlength="11"  style="width: 150px;"/>
+											<p:outputLabel for="fechaIn" value="#{msg['labelFecha']}" />
+											<p:calendar id="fechaIn" value="#{inter.cont.contFechaIni}" showOn="button" pattern="dd-MM-yyyy" mask="true"  style="width: 150px;"/>
+											<p:outputLabel for="fechaFinIn" value="#{msg['labelFechaFin']}" />
+											<p:calendar id="fechaFinIn" value="#{inter.cont.contFechaFin}" showOn="button" pattern="dd-MM-yyyy" mask="true"  style="width: 150px;"/>
+											<p:outputLabel for="FechSuscipIn" value="#{msg['labelFechSuscip']}" />
+											<p:calendar id="FechSuscipIn" value="#{inter.cont.contSuscrip}" showOn="button" pattern="dd-MM-yyyy" mask="true"  style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelPoliza']}" />
+											<p:selectOneMenu value="#{inter.cont.contPoliza}" id="selectPoliIn" onchange="submit()"  valueChangeListener="#{inter.activarCampos}"  style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue=""/>
+												<f:selectItems value="#{inter.lisEst}" var="poc" itemValue="#{poc.idComponente}" itemLabel="#{poc.nombre}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelAnticipo']}" />
+											<p:selectOneMenu value="#{inter.cont.contAnti}" id="selectAntIn" disabled="#{inter.active}" onchange="submit()" valueChangeListener="#{inter.activarCamposF}" style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{inter.lisEst}" var="anin" itemValue="#{anin.idComponente}" itemLabel="#{anin.nombre}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelPorcentaje']}" />
+											<p:inputMask value="#{inter.cont.contPorcAnti}" id="porIn" mask="?99" maxlength="2" disabled="#{inter.activedos}" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelValorAnt']}" />
+											<p:inputMask value="#{inter.cont.contValorAnti}" id="valAntIn" mask="?9999999999" maxlength="11" disabled="#{inter.activedos}" style="width: 150px;"/>
+											<h:outputLabel value="#{msg['labelCentro']}" />
+											<p:selectOneMenu value="#{inter.cont.contCentroId}" id="selectCentIn" style="width: 150px;">
+												<f:selectItem itemLabel="#{msg['labelSeleccione']}" itemValue="" />
+												<f:selectItems value="#{inter.listceco}" var="cin" itemLabel="#{cin.cecoCodigo}-#{cin.cecoDescripcion}" itemValue="#{cin.cecoCodigo}"></f:selectItems>
+											</p:selectOneMenu>
+											<h:outputLabel value="#{msg['labelEstado']}" />
+											<p:inputText value="#{msg['labelNoLegalizado']}" id="selectEstIn" style="width: 150px;" disabled="true"/>
+											<h:outputLabel value="#{msg['labelUrlSVN']}" />
+											<p:inputTextarea value="#{inter.cont.contSevenet}" id="urlIn"  style="width: 150px;"/>
+										</h:panelGrid>
+									</p:scrollPanel>
+									<f:facet name="footer">
+										<div align="center">
+											<h:outputLabel value="#{msg['labelObjeto']}" />
+											<p:inputTextarea value="#{inter.cont.contObj}" id="objeIn"  style="width: 900px; heigth:65px;"/>
+											<br/><br/>
+											<p:commandButton value="#{msg['botonGuardar']}"	action="#{inter.guardarInterventoria()}" update="panelInterventoria" ajax="false"/>		
+										</div>
+									</f:facet>
+								</div>
+							</p:panel>
+						</p:tab>
+					</p:tabView>
+				</div>
+			</h:form>
+		</h:body>
+	</ui:define>
+</ui:composition>

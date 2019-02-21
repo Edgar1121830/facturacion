@@ -1,0 +1,173 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/comf-template-consultas.xhtml">
+	<ui:define name="head">:: GES ::</ui:define>
+	<ui:define name="body">
+		<h:body>
+			<h:form>
+				<p:messages id="messages" globalOnly="true" autoUpdate="true" closable="true" showDetail="true" showSummary="true" />
+				<br /> <br />
+				<div align="center">
+					<p:tabView>
+						<p:tab title="#{msg.headerES}">
+							<p:panel style="width:950px; height:500px" id="panelGeneral" header="#{msg.headerES}" >
+								<div align="center">
+									<h:panelGrid columns="4" style="whit:920px; height:320">
+										<p:outputLabel for="idce" value="#{msg.labelIdCas}" />
+										<p:inputText id="idce" value="#{estc.codec}" disabled="true"></p:inputText>
+										<p:outputLabel for="idn" value="#{msg.labelNombre}" />
+										<p:inputText id="idn" value="#{estc.esc.nombre}" ></p:inputText>
+										<p:outputLabel for="sels" value="#{msg.labelEstado}" />
+										<p:selectOneMenu value="#{estc.esc.estado}" id="sels" style="width:150px">
+											<f:selectItem itemLabel="#{msg.labelSeleccione}" itemValue="0"/>
+											<f:selectItems value="#{estc.lienu}" var="l" itemValue="#{l.idComponente}" itemLabel="#{l.nombre}"/>
+										</p:selectOneMenu>
+										<p:outputLabel for="selas" value="#{msg.labelAsigaci}" />
+										<p:selectOneMenu value="#{estc.esc.asignacion}" id="selas" style="width:150px">
+											<f:selectItem itemLabel="#{msg.labelSeleccione}" itemValue="0"/>
+											<f:selectItems value="#{estc.as}" var="a" itemValue="#{a.id}" itemLabel="#{a.nombre}"/>
+										</p:selectOneMenu>
+									</h:panelGrid>
+									<f:facet name="footer">
+										<div align="center">
+											<p:commandButton value="#{msg.botonGuarddar}" action="#{estc.crearEstaCaso()}" update="@form,pest" ajax="false"/>
+										</div>
+									</f:facet>
+									<p:dataTable id="pest" var="ef" value="#{estc.estl}" editable="true" style="margin-bottom:20px" emptyMessage="#{msg.labelNoReg}"
+										rows="10" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "	
+													 rowsPerPageTemplate="5,10,15,20" ajax="false" filteredValue="#{estc.estCFilter}" binding="#{estc.dtActEC}">
+									   <p:ajax event="rowEdit" listener="#{estc.editarEC(ef)}" update="pest"/>
+									   <p:column headerText="#{msg.labelId}"  >
+													<h:outputText value="#{ef.id}" />
+										</p:column>
+								       <p:column headerText="#{msg.labelNombre}" filterBy="#{ef.nombre}" filterMatchMode="contains">
+								           <p:cellEditor>
+								               <f:facet name="output"><h:outputText value="#{ef.nombre}" /></f:facet>
+								               <f:facet name="input"><p:inputText value="#{ef.nombre}" style="width:100%" label="#{msg.labelNombre}"/></f:facet>
+								           </p:cellEditor>
+								       </p:column>
+								        <p:column headerText="#{msg.labelEst}">
+								           <p:cellEditor>
+								               <f:facet name="output"><h:outputText value="#{ef.estado}" /></f:facet>
+								               <f:facet name="input">
+								               		<p:selectOneMenu value="#{ef.estado}" style="width:150px">
+									               		<f:selectItem itemLabel="#{msg.labelSeleccione}" itemValue="0"/>
+														<f:selectItems value="#{estc.lienu}" var="es" itemValue="#{es.idComponente}" itemLabel="#{es.nombre}"/>
+								               		</p:selectOneMenu>
+								               </f:facet>
+								           </p:cellEditor>
+								       </p:column>
+								       <p:column headerText="#{msg.labelAsigaci}">
+								           <p:cellEditor>
+								               <f:facet name="output"><h:outputText value="#{ef.asignacion}" /></f:facet>
+								               <f:facet name="input">
+								               		<p:selectOneMenu value="#{ef.asignacion}" style="width:150px">
+									               		<f:selectItem itemLabel="#{msg.labelSeleccione}" itemValue="0"/>
+														<f:selectItems value="#{estc.as}" var="a" itemValue="#{a.id}" itemLabel="#{a.nombre}"/>
+								               		</p:selectOneMenu>
+								               </f:facet>
+								           </p:cellEditor>
+								       </p:column>
+								       <p:column headerText="#{msg.labelEditar}" >
+										<p:rowEditor>
+											</p:rowEditor> 
+									   </p:column>
+								   </p:dataTable>
+								</div>
+							</p:panel>
+						</p:tab>
+						<p:tab title="#{msg.headerCos}">
+							<p:panel style="width:950px; height:500px" id="panelCotol" header="#{msg.headerCos}" >
+								<div align="center">
+									<h:panelGrid columns="4" style="whit:920px; height:320">
+										<p:outputLabel for="idcos" value="#{msg.labelId}" />
+										<p:inputText id="idcos" value="#{estc.codDet}" disabled="true"></p:inputText>
+										<p:outputLabel for="nde" value="#{msg.labelNombre}" />
+										<p:inputText id="nde" value="#{estc.deta.descripcion}" ></p:inputText>
+										<p:outputLabel for="val" value="#{msg.labelVal}" />
+										<p:inputText id="val" value="#{estc.deta.valor}" ></p:inputText>
+									</h:panelGrid>
+									<f:facet name="footer">
+										<div align="center">
+											<p:commandButton value="#{msg.botonGuarddar}" action="#{estc.crearDetalle()}" update="@form,deta" ajax="false"/>
+										</div>
+									</f:facet>
+									<p:dataTable id="deta" var="ld" value="#{estc.lisdte}" editable="true" style="margin-bottom:20px" emptyMessage="#{msg.labelNoReg}"
+										rows="10" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "	
+													 rowsPerPageTemplate="5,10,15,20" ajax="false" filteredValue="#{estc.detFilter}" binding="#{estc.dtActuD}">
+									   <p:ajax event="rowEdit" listener="#{estc.editarDetalle(ld)}" update="deta"/>
+									   <p:column headerText="#{msg.labelId}"  >
+													<h:outputText value="#{ld.id}" />
+										</p:column>
+								       <p:column headerText="#{msg.labelNombre}" filterBy="#{ld.descripcion}" filterMatchMode="contains">
+								           <p:cellEditor>
+								               <f:facet name="output"><h:outputText value="#{ld.descripcion}" /></f:facet>
+								               <f:facet name="input"><p:inputText value="#{ld.descripcion}" style="width:100%" label="#{msg.labelNombre}"/></f:facet>
+								           </p:cellEditor>
+								       </p:column>
+								       <p:column headerText="#{msg.labeVa}">
+								           <p:cellEditor>
+								               <f:facet name="output"><h:outputText value="#{ld.valor}" /></f:facet>
+								               <f:facet name="input"><p:inputText value="#{ld.valor}" style="width:100%" label="#{msg.labeVa}"/></f:facet>
+								           </p:cellEditor>
+								       </p:column>
+								       <p:column headerText="#{msg.labelEditar}" >
+										<p:rowEditor>
+											</p:rowEditor> 
+									   </p:column>
+								   </p:dataTable>
+								</div>
+							</p:panel>
+						</p:tab>
+						<p:tab title="#{msg.headerBank}">
+							<p:panel style="width:950px; height:500px" id="panelBank" header="#{msg.headerBank}" >
+								<div align="center">
+									<h:panelGrid columns="4" style="whit:920px; height:320">
+										<p:outputLabel for="idBan" value="#{msg.labelId}" />
+										<p:inputText id="idBan" value="#{estc.codRuta}" disabled="true"></p:inputText>
+										<p:outputLabel for="nb" value="#{msg.labelNombre}" />
+										<p:inputText id="nb" value="#{estc.ruta.nombrebanco}" ></p:inputText>
+										<p:outputLabel for="numeb" value="#{msg.labelNumB}" />
+										<p:inputText id="numeb" value="#{estc.ruta.numero}" ></p:inputText>
+									</h:panelGrid>
+									<f:facet name="footer">
+										<div align="center">
+											<p:commandButton value="#{msg.botonGuarddar}" action="#{estc.crearRuta()}" update="@form,deRut" ajax="false"/>
+										</div>
+									</f:facet>
+									<p:dataTable id="deRut" var="rt" value="#{estc.lisRut}" editable="true" style="margin-bottom:20px" emptyMessage="#{msg.labelNoReg}"
+										rows="10" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "	
+													 rowsPerPageTemplate="5,10,15,20" ajax="false" filteredValue="#{estc.detFilter}" binding="#{estc.dtActuR}">
+									   <p:ajax event="rowEdit" listener="#{estc.editarRuta(rt)}" update="deRut"/>
+									   <p:column headerText="#{msg.labelId}"  >
+													<h:outputText value="#{rt.id}" />
+										</p:column>
+								       <p:column headerText="#{msg.labelNombre}" filterBy="#{rt.nombrebanco}" filterMatchMode="contains">
+								           <p:cellEditor>
+								               <f:facet name="output"><h:outputText value="#{rt.nombrebanco}" /></f:facet>
+								               <f:facet name="input"><p:inputText value="#{rt.nombrebanco}" style="width:100%" label="#{msg.labelNombre}"/></f:facet>
+								           </p:cellEditor>
+								       </p:column>
+								       <p:column headerText="#{msg.labelBanco}">
+								           <p:cellEditor>
+								               <f:facet name="output"><h:outputText value="#{rt.numero}" /></f:facet>
+								               <f:facet name="input"><p:inputText value="#{rt.numero}" style="width:100%" label="#{msg.labelBanco}"/></f:facet>
+								           </p:cellEditor>
+								       </p:column>
+								       <p:column headerText="#{msg.labelEditar}" >
+										<p:rowEditor>
+											</p:rowEditor> 
+									   </p:column>
+								   </p:dataTable>
+								</div>
+							</p:panel>
+						</p:tab>
+					</p:tabView>
+				</div>
+			</h:form>
+		</h:body>
+	</ui:define>
+</ui:composition>

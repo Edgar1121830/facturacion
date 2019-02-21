@@ -1,0 +1,190 @@
+package co.com.ges.servicio;
+
+import java.util.List;
+
+import javax.ejb.EJB;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+
+import co.com.ges.fachada.GesFachada;
+import co.com.ges.modelo.Ciudad;
+import co.com.ges.modelo.Dependencia;
+import co.com.ges.modelo.Detalle;
+import co.com.ges.modelo.Estado;
+import co.com.ges.modelo.Estadocaso;
+import co.com.ges.modelo.Pai;
+import co.com.ges.modelo.Ruta;
+import co.com.ges.modelo.Tipodocumento;
+import co.com.ges.modelo.Tipogasto;
+import co.com.ges.modelo.Zip;
+
+@Stateless
+@LocalBean
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+public class GesServicio {
+	
+	@EJB
+	GesFachada fachada;
+	
+	public List<Pai> listarPais() throws Exception{
+		return fachada.listarPais();
+	}
+	
+	public void crearPais(Pai pais) throws Exception{
+		fachada.crearPais(pais);
+	}
+	
+	public void editarPais(Pai paisNombre) throws Exception{
+		fachada.editarPais(paisNombre);
+	}
+	
+	public Integer maxId() throws Exception{
+		return fachada.maxid();
+	}
+	
+	public List<Estado> traerEstado() throws Exception{
+		return fachada.traerEstado();
+	}
+	
+	public Integer maxCodCiu() throws Exception{
+		return fachada.maxidCiud();
+	}
+	
+	public void crearCiudad(Ciudad ciud) throws Exception{
+		fachada.crearCiudad(ciud);
+	}
+
+	public void editarCiudad(Ciudad ciu) throws Exception{
+		fachada.editarCiudad(ciu);
+	}
+	
+	public List<Ciudad> listarCiudad() throws Exception{
+		return fachada.listarCiudades();
+	}
+
+	public Integer maxCodEst() throws Exception{
+		return fachada.maxidEstado();
+	}
+	
+	public void crearEstado(Estado e) throws Exception{
+		fachada.crearEstado(e);
+	}
+	
+	public void editarEstado(Estado e) throws Exception{
+		fachada.crearEditaEstado(e);
+	}
+	
+	public Integer maxCodZip() throws Exception{
+		return fachada.maxidZip();
+	}
+	
+	public List<Zip> listarZip() throws Exception{
+		return fachada.listarZip();
+	}
+	
+	public void crearZip(Zip z) throws Exception{
+		fachada.crearZip(z);
+	}
+	
+	public void editZip(Zip z) throws Exception{
+		fachada.editaZip(z);
+	}
+	
+	public Integer maxCodEC() throws Exception{
+		return fachada.maxidEC();
+	}
+	
+	public List<Estadocaso> listarEC() throws Exception{
+		return fachada.traerListEsC();
+	}
+	
+	public void crearEC(Estadocaso ec) throws Exception{
+		fachada.crearEC(ec);
+	}
+	
+	public void editarEC(Estadocaso ec) throws Exception{
+		fachada.editarEC(ec);
+	}
+	
+	public Integer maxCodDetalle() throws Exception{
+		return fachada.maxidDet();
+	}
+	
+	public List<Detalle> listarDetalle() throws Exception{
+		return fachada.traerListDet();
+	}
+	
+	public void crearDetalle(Detalle d) throws Exception{
+		fachada.crearDetalle(d);
+	}
+	
+	public void editarDetalle(Detalle d) throws Exception{
+		fachada.editarDetalle(d);
+	}
+	
+	public Integer maxCodRuta() throws Exception{
+		return fachada.maxidRut();
+	}
+	
+	public List<Ruta> listarRuta() throws Exception{
+		return fachada.traerListRut();
+	}
+	
+	public void crearRuta(Ruta r) throws Exception{
+		fachada.crearRuta(r);
+	}
+	
+	public void editarRuta(Ruta r) throws Exception{
+		fachada.editarRuta(r);
+	}
+	
+	public Integer maxCodDep() throws Exception{
+		return fachada.maxidDep();
+	}
+	
+	public List<Dependencia> listarDependencia() throws Exception{
+		return fachada.traerListDep();
+	}
+	
+	public void crearDependencia(Dependencia d) throws Exception{
+		fachada.crearDep(d);
+	}
+	
+	public void editarDependencia(Dependencia d) throws Exception{
+		fachada.editarDep(d);
+	}
+	
+	public Integer maxCodTico() throws Exception{
+		return fachada.maxidTiDoc();
+	}
+	
+	public List<Tipodocumento> listarTico() throws Exception{
+		return fachada.traerListTidoc();
+	}
+	
+	public void crearTico(Tipodocumento tp) throws Exception{
+		fachada.crearTidoc(tp);
+	}
+	
+	public void editarTico(Tipodocumento tp) throws Exception{
+		fachada.editarTidoc(tp);
+	}
+	
+	public Integer maxCodTig() throws Exception{
+		return fachada.maxidTg();
+	}
+	
+	public List<Tipogasto> listarTg() throws Exception{
+		return fachada.traerListTg();
+	}
+	
+	public void crearTg(Tipogasto tg) throws Exception{
+		fachada.crearTg(tg);
+	}
+	
+	public void editarTig(Tipogasto tg) throws Exception{
+		fachada.editarTidoc(tg);;
+	}
+}

@@ -1,0 +1,85 @@
+#---header
+headerLogin= Login
+headerError = Error
+headerAdministracion= Administraci&oacute;n
+headerBank= Banco
+headerPais= Pa&iacute;s  
+headerCrear = Crear
+headerCiudad= Ciudad
+headerPais= Pais
+headerEstado = Estado
+headerZip = Codigo Zip
+headerES = Estado Caso
+headerCos = Costo
+headerBanco = Banco
+
+#---Lables
+labelUsuario = Usuario:
+labelPasword = Password:
+labelPais = Pais
+labelId = Codigo Pais
+labelEditar = Editar
+labelNombre = Nombre
+labelCodCiudad = Codigo Ciudad
+labelSeleccione = Seleccione...
+labelEstado = Estado*: 
+labelCiudad = Ciudad
+labelEst = Estado
+labelCod = Codigo*: 
+labelAbre= Abreviatura*:
+labelPais= Pais*:
+labelIdE = Codigo Estado
+labelAbr = Abreviatura
+labelZip = Zip Codigo*:
+labelIdZ = Id Zip
+labelCodZ = Codigo Zip
+labelIdCas= Id Est Caso*:
+labelAsigaci = Asignacion*:
+labelId= ID*:
+labelVal= Valor*:
+labeVa= Valor
+labelNumB = Numero*:
+labelBanco = Num Banco
+
+#--Botones 
+botonAceptar = Aceptar
+botonGuarddar = Guardar
+botonSalir = Salir
+labelNoReg = No hay registros.
+
+#-----mensajes Exito
+exitoGuardadoPais= EL PAIS HA SIDO GUARDARO
+exitoEditPais= EL PAIS HA SIDO EDITADO
+exitoEditCiudad= EL CIUDAD HA SIDO EDITADO
+exitoGuardadoCiu= EL CIUDAD HA SIDO GUARDARO
+exitoEditEst= EL ESTADO HA SIDO EDITADO
+exitoGuardadoEst= EL ESTADO HA SIDO GUARDARO
+exitoGuarZip= EL CODIGO ZIP HA SIDO GUARDARO
+exitoEditZip= EL CODIGO ZIP HA SIDO EDITADO
+exitoGuaEC= EL ESTADO CASO HA SIDO CREADO
+exitoEditEC= EL ESTADO CASO HA SIDO EDITADO
+exitoGuaDet= EL COSTO HA SIDO CREADO
+exitoEditDet= EL COSTO HA SIDO EDITADO
+exitoGuaBan= EL BANCO HA SIDO CREADO
+exitoEditBan= EL BANCO HA SIDO EDITADO
+exitoGuaDep= EL DEPENDENCIA HA SIDO CREADO
+exitoEditDep= EL DEPENDENCIA HA SIDO EDITADO
+
+#----Mensajes Error
+errorProceso = ERROR AL BUSCAR PAISES
+errorEditarPais = ERROR AL EDITAR PAIS
+errorCamposObli = FALTAN CAMPOS OBLOGATORIOS
+errorCreaCiudad = ERROR AL CREAR CIUDAD
+errorCreaPais = ERROR AL CREAR PAIS
+errorEditarCiu = ERROR AL EDITAR CIUDAD
+errorEstado= ERROR AL CREAR ESTADO
+errorEditarEst = ERROR AL EDITAR ESTADO
+erroCreaZip =  ERROR AL CREAR CODIGO ZIP
+errorEdiZip = ERROR AL EDITAR CODIGO ZIP
+erroCreaed =  ERROR AL CREAR ESTADO CASO
+errorCreDEt = ERROR AL CREAR COSTO
+erroEdiDEt = ERROR AL EDITAR DETALLE
+errorCreBan = ERROR AL CREAR BANCO
+erroEdiBan = ERROR AL EDITAR BANCO
+errorCreDep = ERROR AL CREAR DEPENDENCIA
+erroEdiDep = ERROR AL EDITAR DEPENDENCIA

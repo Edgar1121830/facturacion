@@ -1,0 +1,67 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/comf-template-consultas.xhtml">
+	<ui:define name="head">:: GES ::</ui:define>
+	<ui:define name="body">
+		<h:body>
+			<h:form>
+				<p:messages id="messages" globalOnly="true" autoUpdate="true" closable="true" showDetail="true" showSummary="true" />
+				<br /> <br />
+				<div align="center">
+					<p:panel style="width:950px; height:500px" id="panelOfficer"
+						header="#{msg.headerOff}">
+						<div align="center">
+							<p:dataTable id="offic" var="o" value="#{off.lisVf}" editable="true" style="margin-bottom:20px" emptyMessage="#{msg.labelNoReg}"
+										rows="10" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "	
+										rowsPerPageTemplate="5,10,15,20" ajax="false" filteredValue="#{off.offFilter}" binding="#{off.dtActuOff}">
+								<p:ajax event="rowEdit" listener="#{off.editarOfficer(o)}" update="offic" />
+								<p:column headerText="#{msg.labelTipiD}">
+									<f:facet name="output">
+											<h:outputText value="#{o.tipoIdentificacion}" />
+										</f:facet>
+								</p:column>
+								<p:column headerText="#{msg.labelId}">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{o.identificacion}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText value="#{o.identificacion}" style="width:100%" label="#{msg.labelId}" />
+										</f:facet>
+									</p:cellEditor>
+								</p:column>
+								<p:column headerText="#{msg.labelFuncio}">
+									<f:facet name="output">
+											<h:outputText value="#{o.funcionario}" />
+									</f:facet>
+								</p:column>
+								<p:column headerText="#{msg.labelUser}">
+									<f:facet name="output">
+											<h:outputText value="#{o.usuario}" />
+									</f:facet>
+								</p:column>
+								<p:column headerText="#{msg.labelPerf}">
+								    <f:facet name="output">
+											<h:outputText value="#{o.perfil}" />
+									</f:facet>
+								</p:column>
+								<p:column headerText="#{msg.labelDep}">
+								    <f:facet name="output">
+											<h:outputText value="#{o.dependencia}" />
+									</f:facet>
+								</p:column>
+								<p:column headerText="#{msg.labelEditar}">
+									<p:rowEditor>
+									</p:rowEditor>
+								</p:column>
+							</p:dataTable>
+						</div>
+					</p:panel>
+				</div>
+			</h:form>
+		</h:body>
+	</ui:define>
+</ui:composition>

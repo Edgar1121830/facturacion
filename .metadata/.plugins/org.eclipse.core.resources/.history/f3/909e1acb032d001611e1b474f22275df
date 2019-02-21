@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/comf-template-menu.xhtml">
+	<ui:define name="head">:: GES ::</ui:define>
+	<ui:define name="body">
+		<h:body>
+			<h:form>
+				<p:messages id="messages" globalOnly="true" autoUpdate="true" closable="true" showDetail="true" showSummary="true" />
+				<br /> <br />
+				<div align="center">
+					<p:tabView>
+						<p:tab title="#{msg.headerAdministracion}">
+							<p:panel style="width:950px; height:500px" id="panelGeneral" header="#{msg.headerPais}" >
+								<div align="center">
+									<p:dataTable id="paised" var="pa" value="#{admin.listPais}" editable="true" style="margin-bottom:20px">
+									   <p:ajax event="rowEdit" listener="#{admin.edit(pa)}" update="paised"/>
+									   <p:column headerText="#{msg.labelId}"  >
+													<h:outputText value="#{pa.id}" />
+										</p:column>
+								       <p:column headerText="#{msg.labelPais}">
+								           <p:cellEditor>
+								               <f:facet name="output"><h:outputText value="#{pa.nombre}" /></f:facet>
+								               <f:facet name="input"><p:inputText value="#{pa.nombre}" style="width:100%" label="#{msg.labelPais}"/></f:facet>
+								           </p:cellEditor>
+								       </p:column>
+								       <p:column headerText="#{msg.labelEditar}" >
+										<p:rowEditor>
+											</p:rowEditor> 
+									   </p:column>
+									   <f:facet name="footer">
+								            <div align="center">
+												<p:commandButton value="#{msg.botonGuarddar}" action="#{admin.active()}" update="@form" ajax="false" immediate="true"/>
+											</div>
+								        </f:facet>
+								   </p:dataTable>
+								</div>
+							</p:panel>
+							<p:panel header="#{msg.headerCrear}" id="pop" visible="#{admUser.permisosCreate}">
+								<p:panelGrid styleClass="panel" id="panelModal">
+									<p:row>
+										<p:column>
+											<p:outputLabel for="re2" value="Reportes:" />
+											<p:inputText id="re2" value="#{admin.paisNew.nombre}" ></p:inputText>
+											
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+								<div align="center">
+									<p:commandButton value="#{msg.botonGuarddar}" action="#{admin.create()}" update="@form"></p:commandButton>
+									<p:commandButton value="#{msg.botonGuarddar}" action="#{admin.cerrar()}" update="@form"></p:commandButton>
+								</div>
+							</p:panel>
+						</p:tab>
+					</p:tabView>
+				</div>
+			</h:form>
+		</h:body>
+	</ui:define>
+</ui:composition>

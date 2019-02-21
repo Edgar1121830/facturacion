@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kb-project>
+ <depends-on-projects/>
+ <used-by-projects>
+  <project name="facturacionWeb"/>
+ </used-by-projects>
+ <paths>
+  <path value="C:/Users/USER/.m2/repository/net/sf/squirrel-sql/squirrel-sql/3.2.0-RC1/squirrel-sql-3.2.0-RC1.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/slf4j/slf4j-api/1.7.5/slf4j-api-1.7.5.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/jboss/spec/javax/annotation/jboss-annotations-api_1.1_spec/1.0.0.Final/jboss-annotations-api_1.1_spec-1.0.0.Final.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/hibernate/hibernate-validator/3.0.0.ga/hibernate-validator-3.0.0.ga.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/springframework/spring-context/2.5.2/spring-context-2.5.2.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/jboss/spec/javax/jms/jboss-jms-api_1.1_spec/1.0.0.Final/jboss-jms-api_1.1_spec-1.0.0.Final.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/jboss/spec/javax/xml/rpc/jboss-jaxrpc-api_1.1_spec/1.0.0.Final/jboss-jaxrpc-api_1.1_spec-1.0.0.Final.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/jboss/resteasy/jaxrs-api/2.1.0.GA/jaxrs-api-2.1.0.GA.jar"/>
+  <path value="C:/Users/USER/.m2/repository/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4.jar"/>
+  <path value="C:/Users/USER/.m2/repository/javax/persistence/persistence-api/1.0/persistence-api-1.0.jar"/>
+  <path value="C:/Users/USER/.m2/repository/javax/xml/jaxrpc-api/1.1/jaxrpc-api-1.1.jar"/>
+  <path value="C:/Users/USER/.m2/repository/javax/activation/activation/1.1/activation-1.1.jar"/>
+  <path value="C:/Users/USER/.m2/repository/javax/mail/mail/1.4.2/mail-1.4.2.jar"/>
+  <path value="C:/Users/USER/.m2/repository/commons-lang/commons-lang/1.0/commons-lang-1.0.jar"/>
+  <path value="C:/Users/USER/.m2/repository/commons-codec/commons-codec/1.3/commons-codec-1.3.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/jboss/spec/javax/enterprise/deploy/jboss-jad-api_1.2_spec/1.0.0.Final/jboss-jad-api_1.2_spec-1.0.0.Final.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/jboss/spec/javax/servlet/jboss-servlet-api_3.0_spec/1.0.0.Final/jboss-servlet-api_3.0_spec-1.0.0.Final.jar"/>
+  <path value="C:/Users/USER/.m2/repository/stax/stax-api/1.0.1/stax-api-1.0.1.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/springframework/spring-beans/2.5.2/spring-beans-2.5.2.jar"/>
+  <path value="C:/Users/USER/.m2/repository/ant/ant-junit/1.6.5/ant-junit-1.6.5.jar"/>
+  <path value="C:/Users/USER/.m2/repository/javax/transaction/jta/1.1/jta-1.1.jar"/>
+  <path value="C:/Users/USER/.m2/repository/antlr/antlr/2.7.5/antlr-2.7.5.jar"/>
+  <path value="C:/Users/USER/.m2/repository/be/cyberelf/nanoxml/nanoxml/2.2.3/nanoxml-2.2.3.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/jboss/spec/javax/security/jacc/jboss-jacc-api_1.4_spec/1.0.0.Final/jboss-jacc-api_1.4_spec-1.0.0.Final.jar"/>
+  <path value="C:/Users/USER/.m2/repository/junit/junit/3.7/junit-3.7.jar"/>
+  <path value="C:/Users/USER/.m2/repository/net/sf/squirrel-sql/plugins/informix/3.2.0-RC1/informix-3.2.0-RC1.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/jboss/spec/javax/servlet/jsp/jboss-jsp-api_2.2_spec/1.0.0.Final/jboss-jsp-api_2.2_spec-1.0.0.Final.jar"/>
+  <path value="C:/Users/USER/.m2/repository/asm/asm-attrs/1.5.3/asm-attrs-1.5.3.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/springframework/spring-context-support/2.5.2/spring-context-support-2.5.2.jar"/>
+  <path value="C:/Users/USER/.m2/repository/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/eclipse/persistence/eclipselink/2.5.2-M1/eclipselink-2.5.2-M1.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/jboss/spec/javax/transaction/jboss-transaction-api_1.1_spec/1.0.0.Final/jboss-transaction-api_1.1_spec-1.0.0.Final.jar"/>
+  <path value="C:/Users/USER/.m2/repository/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/jboss/spec/javax/resource/jboss-connector-api_1.5_spec/1.0.0.Final/jboss-connector-api_1.5_spec-1.0.0.Final.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/jboss/spec/javax/xml/bind/jboss-jaxb-api_2.2_spec/1.0.0.Final/jboss-jaxb-api_2.2_spec-1.0.0.Final.jar"/>
+  <path value="C:/Users/USER/.m2/repository/jgoodies/forms/1.0.5/forms-1.0.5.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/antlr/stringtemplate/3.1-b1/stringtemplate-3.1-b1.jar"/>
+  <path value="C:/Users/USER/.m2/repository/commons-httpclient/commons-httpclient/3.1/commons-httpclient-3.1.jar"/>
+  <path value="C:/Users/USER/.m2/repository/commons-collections/commons-collections/2.1.1/commons-collections-2.1.1.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/hibernate/hibernate-commons-annotations/3.3.0.ga/hibernate-commons-annotations-3.3.0.ga.jar"/>
+  <path value="C:/Users/USER/.m2/repository/log4j/log4j/1.2.15/log4j-1.2.15.jar"/>
+  <path value="C:/Users/USER/.m2/repository/net/sf/squirrel-sql/fw/3.2.0-RC1/fw-3.2.0-RC1-tests.jar"/>
+  <path value="C:/Users/USER/.m2/repository/net/sf/ehcache/ehcache/1.2.3/ehcache-1.2.3.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/hibernate/hibernate/3.2.4.sp1/hibernate-3.2.4.sp1.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/jboss/spec/javax/xml/ws/jboss-jaxws-api_2.2_spec/1.0.0.Final/jboss-jaxws-api_2.2_spec-1.0.0.Final.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/jboss/spec/javax/xml/soap/jboss-saaj-api_1.3_spec/1.0.0.Final/jboss-saaj-api_1.3_spec-1.0.0.Final.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/eclipse/persistence/javax.persistence/2.1.0/javax.persistence-2.1.0.jar"/>
+  <path value="C:/Users/USER/.m2/repository/javax/jws/jsr181-api/1.0-MR1/jsr181-api-1.0-MR1.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/hibernate/hibernate-entitymanager/3.3.1.ga/hibernate-entitymanager-3.3.1.ga.jar"/>
+  <path value="C:/Users/USER/.m2/repository/javax/servlet/jstl/1.2/jstl-1.2.jar">
+   <libraries>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/c-1_0-rt.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/c-1_0.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/c.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/fmt-1_0-rt.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/fmt-1_0.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/fmt.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/fn.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/permittedtaglibs.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/scriptfree.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/sql-1_0-rt.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/sql-1_0.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/sql.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/x-1_0-rt.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/x-1_0.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-jstl-1.2.jar/meta-inf/x.tld" project="facturacionModelo"/>
+    </library>
+   </libraries>
+  </path>
+  <path value="C:/Users/USER/.m2/repository/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar"/>
+  <path value="C:/Users/USER/.m2/repository/jboss/javassist/3.3.ga/javassist-3.3.ga.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/jboss/spec/javax/interceptor/jboss-interceptors-api_1.1_spec/1.0.0.Final/jboss-interceptors-api_1.1_spec-1.0.0.Final.jar"/>
+  <path value="C:/Users/USER/.m2/repository/commons-cli/commons-cli/1.0/commons-cli-1.0.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/hibernate/hibernate-annotations/3.3.0.ga/hibernate-annotations-3.3.0.ga.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/jboss/spec/javax/security/auth/message/jboss-jaspi-api_1.0_spec/1.0.0.Final/jboss-jaspi-api_1.0_spec-1.0.0.Final.jar"/>
+  <path value="C:/Users/USER/.m2/repository/net/sf/squirrel-sql/fw/3.2.0-RC1/fw-3.2.0-RC1.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/jboss/spec/javax/el/jboss-el-api_2.2_spec/1.0.0.Final/jboss-el-api_2.2_spec-1.0.0.Final.jar"/>
+  <path value="C:/Users/USER/.m2/repository/javax/javaee-api/6.0/javaee-api-6.0.jar">
+   <libraries>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-javaee-api-6.0.jar/meta-inf/c-1_0-rt.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-javaee-api-6.0.jar/meta-inf/c-1_0.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-javaee-api-6.0.jar/meta-inf/c.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-javaee-api-6.0.jar/meta-inf/fmt-1_0-rt.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-javaee-api-6.0.jar/meta-inf/fmt-1_0.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-javaee-api-6.0.jar/meta-inf/fmt.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-javaee-api-6.0.jar/meta-inf/fn.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-javaee-api-6.0.jar/meta-inf/html_basic.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-javaee-api-6.0.jar/meta-inf/jsf_core.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-javaee-api-6.0.jar/meta-inf/mojarra_ext.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-javaee-api-6.0.jar/meta-inf/permittedtaglibs.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-javaee-api-6.0.jar/meta-inf/scriptfree.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-javaee-api-6.0.jar/meta-inf/sql-1_0-rt.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-javaee-api-6.0.jar/meta-inf/sql-1_0.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-javaee-api-6.0.jar/meta-inf/sql.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-javaee-api-6.0.jar/meta-inf/x-1_0-rt.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-javaee-api-6.0.jar/meta-inf/x-1_0.tld" project="facturacionModelo"/>
+    </library>
+    <library class="tld">
+     <id class="model-object"
+      path="FileSystems/lib-javaee-api-6.0.jar/meta-inf/x.tld" project="facturacionModelo"/>
+    </library>
+   </libraries>
+  </path>
+  <path value="C:/Users/USER/.m2/repository/jboss/jboss-common-core/2.0.4.GA/jboss-common-core-2.0.4.GA.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/hibernate/javax/persistence/hibernate-jpa-2.0-api/1.0.0.Final/hibernate-jpa-2.0-api-1.0.0.Final.jar"/>
+  <path value="C:/Users/USER/.m2/repository/net/sourceforge/jexcelapi/jxl/2.6.10/jxl-2.6.10.jar"/>
+  <path value="C:/Users/USER/.m2/repository/aopalliance/aopalliance/1.0/aopalliance-1.0.jar"/>
+  <path value="C:/Users/USER/.m2/repository/com/sun/faces/jsf-api/2.0.3-b05/jsf-api-2.0.3-b05.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/jboss/spec/javax/xml/registry/jboss-jaxr-api_1.0_spec/1.0.0.Final/jboss-jaxr-api_1.0_spec-1.0.0.Final.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/eclipse/persistence/commonj.sdo/2.1.1/commonj.sdo-2.1.1.jar"/>
+  <path value="C:/Users/USER/.m2/repository/cglib/cglib/2.1_3/cglib-2.1_3.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/springframework/spring-core/2.5.2/spring-core-2.5.2.jar"/>
+  <path value="C:/Users/USER/.m2/repository/org/jboss/spec/javax/ejb/jboss-ejb-api_3.1_spec/1.0.0.Final/jboss-ejb-api_3.1_spec-1.0.0.Final.jar"/>
+  <path value="C:/Users/USER/.m2/repository/javax/inject/javax.inject/1/javax.inject-1.jar"/>
+  <path value="C:/Users/USER/.m2/repository/javax/enterprise/cdi-api/1.0-SP4/cdi-api-1.0-SP4.jar"/>
+  <path value="C:/Users/USER/.m2/repository/asm/asm/1.5.3/asm-1.5.3.jar"/>
+ </paths>
+ <validation>
+  <el/>
+ </validation>
+ <aliases/>
+ <includes/>
+ <uris/>
+</kb-project>

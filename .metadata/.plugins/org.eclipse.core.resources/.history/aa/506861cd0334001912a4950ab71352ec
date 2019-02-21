@@ -1,0 +1,332 @@
+package co.com.facturacion.controller;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Properties;
+
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
+
+import org.primefaces.component.datatable.DataTable;
+
+import co.com.ges.dto.CiudadDTO;
+import co.com.ges.dto.OpcionesMenuUsuario;
+import co.com.ges.modelo.Ciudad;
+import co.com.ges.modelo.Estadofactura;
+import co.com.ges.modelo.Funcionario;
+import co.com.ges.modelo.Persona;
+import co.com.ges.modelo.Sexo;
+import co.com.ges.servicio.GesServicio;
+import co.com.ges.vistas.VFuncionario;
+
+@ManagedBean(name="off")
+@SessionScoped
+public class OfficerControl implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+	
+	private Properties prop = new Properties();
+	private String user;
+	private Funcionario f = new Funcionario();
+	private List<VFuncionario> lisVf = new ArrayList<VFuncionario>();
+	private VFuncionario vf = new VFuncionario();
+	private int totolReg = 0;
+	private DataTable dtActuOff;
+	private List<VFuncionario> offFilter;
+	private boolean ventVer = false;
+	private boolean vPrin = true;
+	private Funcionario fun = new Funcionario();
+	private Persona per = new Persona();
+	private List<Sexo> lisSex = new ArrayList<Sexo>();
+	private List<CiudadDTO> lisCiuE = new ArrayList<CiudadDTO>();
+	private List<CiudadDTO> lisCiuEO = new ArrayList<CiudadDTO>();
+	private int idEstado = 0;
+	private int idEstadoO = 0;
+//	private boolean active = false;
+//	private boolean activeO = false;
+	private Date fechaNa = new Date();
+	private Date feDateV = new Date();
+	private int idtipo = 0;
+	private String nit = null; 
+	
+	@EJB
+	GesServicio servicio;
+	
+	public OfficerControl() {
+		super();
+		this.cargarPropiedades();
+	}
+	
+	public void cargarPropiedades(){
+		prop = new Properties();
+		try{
+			prop.load(AdministracionControl.class.getResourceAsStream("mensajes.properties"));
+			user=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(LoginControl.AUTH_KEY);
+			f =(Funcionario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(LoginControl.USERS);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@PostConstruct
+	public void cargarPermisos(){
+		@SuppressWarnings("unchecked")
+		List<OpcionesMenuUsuario> opc = (List<OpcionesMenuUsuario>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("menu");
+		try{
+			dtActuOff = new DataTable();
+			cargarDatos();
+//			for(OpcionesMenuUsuario o: opc){
+//				if((o.getIdMenu().compareTo(ComponentesMenu.CONTRATO.getIdComponente())==0) 
+//						&& (o.getPermisoCodigo().compareTo(PermisosMenu.ADMCONTRATRO.getIdPermiso().intValue())==0)){
+//					if((o.getIdMenu().compareTo(ComponentesMenu.CONTRATO.getIdComponente())==0) 
+//						&& (o.getPermisoCodigo().compareTo(PermisosMenu.SUMINISTROS.getIdPermiso().intValue())==0)){
+//						
+//					}
+//				}
+//			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void cargarDatos() {
+		try{
+			lisVf = servicio.traerFuncionario();
+			lisSex = servicio.listarSexo();
+			lisCiuE = servicio.ciudXEstad(11);
+			if(lisVf.size()>0){
+				totolReg = lisVf.size();
+				offFilter = lisVf;
+				dtActuOff.setValue(lisVf);
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorTraerDat")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCarga")));
+		}
+	}
+	
+	public void abrirPanel(){
+		ventVer = true;
+		vPrin = false;
+		per = new Persona();
+		lisCiuE = new ArrayList<CiudadDTO>();
+		lisCiuEO = new ArrayList<CiudadDTO>();
+	}
+	
+	public void crearFunciorio(){
+		try{
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("erroFUnci")));
+			
+		}
+	}
+	
+	public void editarOfficer(VFuncionario vfe){
+		try{
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+	public void activarCampos(ValueChangeEvent e){
+		try{
+			if(e.getNewValue()!=null && !e.getNewValue().equals("")){
+				idEstado = (int) e.getNewValue(); 
+				if(idEstado>0){
+					lisCiuE = new ArrayList<CiudadDTO>();
+					lisCiuE = servicio.ciudXEstad(idEstado);
+				}
+			}
+			
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+
+	public void activarCamposO(ValueChangeEvent e){
+		try{
+			if(e.getNewValue()!=null && !e.getNewValue().equals("")){
+				idEstadoO=(int) e.getNewValue(); 
+				if(idEstadoO>0){
+					lisCiuEO = new ArrayList<CiudadDTO>();
+					lisCiuEO = servicio.ciudXEstad(idEstadoO);
+				}
+			}
+			
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public List<VFuncionario> getLisVf() {
+		return lisVf;
+	}
+
+	public void setLisVf(List<VFuncionario> lisVf) {
+		this.lisVf = lisVf;
+	}
+
+	public VFuncionario getVf() {
+		return vf;
+	}
+
+	public void setVf(VFuncionario vf) {
+		this.vf = vf;
+	}
+
+	public int getTotolReg() {
+		return totolReg;
+	}
+
+	public void setTotolReg(int totolReg) {
+		this.totolReg = totolReg;
+	}
+
+	public DataTable getDtActuOff() {
+		return dtActuOff;
+	}
+
+	public void setDtActuOff(DataTable dtActuOff) {
+		this.dtActuOff = dtActuOff;
+	}
+
+	public List<VFuncionario> getOffFilter() {
+		return offFilter;
+	}
+
+	public void setOffFilter(List<VFuncionario> offFilter) {
+		this.offFilter = offFilter;
+	}
+
+	public boolean isVentVer() {
+		return ventVer;
+	}
+
+	public void setVentVer(boolean ventVer) {
+		this.ventVer = ventVer;
+	}
+
+	public boolean isvPrin() {
+		return vPrin;
+	}
+
+	public void setvPrin(boolean vPrin) {
+		this.vPrin = vPrin;
+	}
+
+	public Funcionario getFun() {
+		return fun;
+	}
+
+	public void setFun(Funcionario fun) {
+		this.fun = fun;
+	}
+
+	public Persona getPer() {
+		return per;
+	}
+
+	public void setPer(Persona per) {
+		this.per = per;
+	}
+
+	public List<Sexo> getLisSex() {
+		return lisSex;
+	}
+
+	public void setLisSex(List<Sexo> lisSex) {
+		this.lisSex = lisSex;
+	}
+
+	public List<CiudadDTO> getLisCiuE() {
+		return lisCiuE;
+	}
+
+	public void setLisCiuE(List<CiudadDTO> lisCiuE) {
+		this.lisCiuE = lisCiuE;
+	}
+
+	public int getIdEstado() {
+		return idEstado;
+	}
+
+	public void setIdEstado(int idEstado) {
+		this.idEstado = idEstado;
+	}
+
+//	public boolean isActive() {
+//		return active;
+//	}
+//
+//	public void setActive(boolean active) {
+//		this.active = active;
+//	}
+
+	public int getIdEstadoO() {
+		return idEstadoO;
+	}
+
+	public void setIdEstadoO(int idEstadoO) {
+		this.idEstadoO = idEstadoO;
+	}
+
+	public List<CiudadDTO> getLisCiuEO() {
+		return lisCiuEO;
+	}
+
+	public void setLisCiuEO(List<CiudadDTO> lisCiuEO) {
+		this.lisCiuEO = lisCiuEO;
+	}
+
+//	public boolean isActiveO() {
+//		return activeO;
+//	}
+//
+//	public void setActiveO(boolean activeO) {
+//		this.activeO = activeO;
+//	}
+
+	public int getIdtipo() {
+		return idtipo;
+	}
+
+	public void setIdtipo(int idtipo) {
+		this.idtipo = idtipo;
+	}
+
+	public String getNit() {
+		return nit;
+	}
+
+	public void setNit(String nit) {
+		this.nit = nit;
+	}
+
+	public Date getFechaNa() {
+		return fechaNa;
+	}
+
+	public void setFechaNa(Date fechaNa) {
+		this.fechaNa = fechaNa;
+	}
+
+	public Date getFeDateV() {
+		return feDateV;
+	}
+
+	public void setFeDateV(Date feDateV) {
+		this.feDateV = feDateV;
+	}
+}

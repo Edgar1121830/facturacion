@@ -1,0 +1,9 @@
+package co.com.ges.fachada;
+
+import java.util.List;
+
+public interface GesFachada {
+	
+	public List<Pai> listarPais() throws Exception;
+
+}

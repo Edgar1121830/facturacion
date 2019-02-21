@@ -1,0 +1,9 @@
+INDEX VERSION 1.131
+E:\workspaceUniversidad\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1675857484.index
+\facturacionWeb\src\main\java
+E:\workspaceUniversidad\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2937634049.index
+\facturacionWeb\src\main\java
+E:\workspaceUniversidad\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3836621885.index
+\facturacionWeb\src\main\java
+E:\workspaceUniversidad\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2743005284.index
+\facturacionWeb\src\main\java

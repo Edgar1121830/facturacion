@@ -1,0 +1,38 @@
+package co.com.ges.fachada;
+
+import java.util.List;
+
+import javax.ejb.Remote;
+
+import co.com.ges.modelo.Ciudad;
+import co.com.ges.modelo.Estado;
+import co.com.ges.modelo.Pai;
+
+@Remote
+public interface GesFachada {
+	
+	public List<Pai> listarPais() throws Exception;
+	
+	public Pai listarPaisPorId(int id) throws Exception;
+	
+	public void crearPais(Pai pais) throws Exception;
+	
+	public void editarPais(Pai pais) throws Exception;
+	
+	public Integer maxid() throws Exception;
+	
+	public List<Estado> traerEstado() throws Exception;
+	
+	public Integer maxidCiud() throws Exception;
+	
+	public void crearCiudad(Ciudad ciud) throws Exception;
+	
+	public void editarCiudad(Ciudad ciud) throws Exception;
+	
+	public Ciudad listarCiudadPorId(int id) throws Exception;
+	
+	public List<Ciudad> listarCiudades() throws Exception;
+	
+	public Estado traerEstadoId(int id) throws Exception;
+
+}

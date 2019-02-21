@@ -1,0 +1,86 @@
+package co.com.ges.modelo;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.*;
+
+
+/**
+ * The persistent class for the CIUDAD database table.
+ * 
+ */
+@Entity
+@Table(name="CIUDAD")
+public class Ciudad implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
+	public static final String TRAER_AMX_ID = "Ciudad.TRAER_AMX_ID";
+
+	public static final String EDITAR_CIUDAD = "Ciudad.EDITAR_CIUDAD";
+	
+	@Id
+	private int id;
+
+	private Date fecha;
+
+	private int idestado;
+
+	private String idfuncionario;
+
+	private int idtipofuncionario;
+
+	private String nombre;
+
+	public Ciudad() {
+	}
+
+	public int getId() {
+		return this.id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Date getFecha() {
+		return this.fecha;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+
+	public int getIdestado() {
+		return this.idestado;
+	}
+
+	public void setIdestado(int idestado) {
+		this.idestado = idestado;
+	}
+
+	public String getIdfuncionario() {
+		return this.idfuncionario;
+	}
+
+	public void setIdfuncionario(String idfuncionario) {
+		this.idfuncionario = idfuncionario;
+	}
+
+	public int getIdtipofuncionario() {
+		return this.idtipofuncionario;
+	}
+
+	public void setIdtipofuncionario(int idtipofuncionario) {
+		this.idtipofuncionario = idtipofuncionario;
+	}
+
+	public String getNombre() {
+		return this.nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+}

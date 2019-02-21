@@ -1,0 +1,40 @@
+package co.com.ges.modelo;
+
+import java.io.Serializable;
+import javax.persistence.*;
+
+
+/**
+ * The persistent class for the ANIO database table.
+ * 
+ */
+@Entity
+@Table(name="ANIO")
+public class Anio implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	private int id;
+
+	private short nombre;
+
+	public Anio() {
+	}
+
+	public int getId() {
+		return this.id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public short getNombre() {
+		return this.nombre;
+	}
+
+	public void setNombre(short nombre) {
+		this.nombre = nombre;
+	}
+
+}

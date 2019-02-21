@@ -1,0 +1,216 @@
+package co.com.ges.bean;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import co.com.ges.fachada.GesFachada;
+import co.com.ges.modelo.Ciudad;
+import co.com.ges.modelo.Estado;
+import co.com.ges.modelo.Pai;
+
+@Stateless
+@LocalBean
+@TransactionManagement(TransactionManagementType.CONTAINER)
+public class GesBean implements GesFachada{
+
+	@PersistenceContext(unitName="jpa-ges")
+	private EntityManager em;
+	
+	public GesBean() {
+		super();
+	}
+
+	@Override
+	public List<Pai> listarPais() throws Exception {
+		List<Pai> pais = new ArrayList<Pai>();
+		 
+		Query q = em.createNamedQuery(Pai.LISTAR_PAIS);
+		pais = q.getResultList();
+		
+		return pais;
+	}
+
+	@Override
+	public void crearPais(Pai pais) throws Exception {
+		if(pais!=null){
+			em.persist(pais);
+		}
+	}
+
+	@Override
+	public void editarPais(Pai pais) throws Exception {
+		Pai p = new Pai();
+		List<Object[]> obj = new ArrayList<Object[]>();
+		if(pais!=null){
+			p = listarPaisPorId(pais.getId());
+			if(p.getId()>0){
+				p.setNombre(pais.getNombre());
+				Query q = em.createNamedQuery(Pai.EDITAR_PAIS);
+				q.setParameter("nombre", pais.getNombre());
+				q.setParameter("id", pais.getId());
+				q.executeUpdate();
+			}
+		}
+		
+	}
+
+	@Override
+	public Pai listarPaisPorId(int id) throws Exception {
+		List<Pai> obj = new ArrayList<Pai>();
+		Pai pais = new Pai();
+		if(id>0){
+			Query q = em.createNamedQuery(Pai.LISTAR_PAIS_POR_ID).setParameter("id", id);
+			obj = q.getResultList();
+			if(obj.size()>0){
+				for(Pai o: obj){
+					pais = new Pai();
+					pais.setId(o.getId());
+					pais.setNombre(o.getNombre());
+				}
+			}
+		}
+		
+		return pais;
+	}
+
+	@Override
+	public Integer maxid() throws Exception {
+		Integer p = new Integer(0);
+		Query q = em.createNamedQuery(Pai.MAX_PAIS);
+		
+		p =(Integer) q.getSingleResult();
+		
+		return p;
+	}
+
+	@Override
+	public List<Estado> traerEstado() throws Exception {
+		List<Estado> esta = new ArrayList<Estado>();
+		
+		Query q = em.createNamedQuery(Estado.TRAER_ESTADO);
+		esta = q.getResultList();
+		
+		return esta;
+	}
+
+	@Override
+	public Integer maxidCiud() throws Exception {
+		Integer p = new Integer(0);
+		Query q = em.createNamedQuery(Ciudad.TRAER_AMX_ID);
+		
+		p =(Integer) q.getSingleResult();
+		
+		return p;
+	}
+
+	@Override
+	public void crearCiudad(Ciudad ciud) throws Exception {
+		if(ciud!=null){
+			em.persist(ciud);
+		}
+		
+	}
+
+	@Override
+	public void editarCiudad(Ciudad ciud) throws Exception {
+		Ciudad p = new Ciudad();
+		List<Object[]> obj = new ArrayList<Object[]>();
+		if(ciud!=null){
+			p = listarCiudadPorId(ciud.getId());
+			if(p.getId()>0){
+				p.setNombre(ciud.getNombre());
+				Query q = em.createNamedQuery(Ciudad.EDITAR_CIUDAD);
+				q.setParameter("nombre", ciud.getNombre());
+				q.setParameter("funcionario", ciud.getIdfuncionario());
+				q.setParameter("estado", ciud.getIdestado());
+				q.setParameter("id", ciud.getId());
+				q.setParameter("fecha", new Date());
+				q.executeUpdate();
+			}
+		}
+		
+	}
+
+	@Override
+	public Ciudad listarCiudadPorId(int id) throws Exception {
+		List<Ciudad> obj = new ArrayList<Ciudad>();
+		Ciudad ciudad = new Ciudad();
+		if(id>0){
+			Query q = em.createNamedQuery(Ciudad.CIUDAD_X_ID).setParameter("id", id);
+			obj = q.getResultList();
+			if(obj.size()>0){
+				for(Ciudad o: obj){
+					ciudad = new Ciudad();
+					ciudad.setId(o.getId());
+					ciudad.setNombre(o.getNombre());
+					ciudad.setIdestado(o.getIdestado());
+					ciudad.setFecha(o.getFecha());
+					ciudad.setIdtipofuncionario(o.getIdtipofuncionario());
+				}
+			}
+		}
+		
+		return ciudad;
+	}
+
+	@Override
+	public List<Ciudad> listarCiudades() throws Exception {
+		List<Ciudad> ciudad = new ArrayList<Ciudad>();
+		 
+		Query q = em.createNamedQuery(Ciudad.LISTAR_CIUDAD);
+		ciudad = q.getResultList();
+		
+		return ciudad;
+	}
+
+	@Override
+	public Estado traerEstadoId(int id) throws Exception {
+		List<Estado> obj = new ArrayList<Estado>();
+		Estado estado = new Estado();
+		if(id>0){
+			Query q = em.createNamedQuery(Estado.TRAER_ESTADO_ID).setParameter("id", id);
+			obj = q.getResultList();
+			if(obj.size()>0){
+				for(Estado o: obj){
+					estado = new Estado();
+					estado.setId(o.getId());
+					estado.setNombre(o.getNombre());
+					estado.setAbreviatura(o.getAbreviatura());
+					estado.setIdpais(o.getIdpais());
+				}
+			}
+		}
+		
+		return estado;
+	}
+
+	@Override
+	public Integer maxidEstado() throws Exception {
+		Integer p = new Integer(0);
+		Query q = em.createNamedQuery(Estado.TRAER_ESTADO_ID_MAX);
+		
+		p =(Integer) q.getSingleResult();
+		
+		return p;
+	}
+
+	@Override
+	public void crearEstado(Estado e) throws Exception {
+		if(e.getId()>0){
+			em.persist(e);
+		}
+		
+	}
+
+
+	
+}

@@ -1,0 +1,100 @@
+package co.com.ges.fachada;
+
+import java.util.List;
+
+import javax.ejb.Remote;
+
+import co.com.ges.modelo.Ciudad;
+import co.com.ges.modelo.Dependencia;
+import co.com.ges.modelo.Detalle;
+import co.com.ges.modelo.Estado;
+import co.com.ges.modelo.Estadocaso;
+import co.com.ges.modelo.Pai;
+import co.com.ges.modelo.Ruta;
+import co.com.ges.modelo.Zip;
+
+@Remote
+public interface GesFachada {
+	
+	public List<Pai> listarPais() throws Exception;
+	
+	public Pai listarPaisPorId(int id) throws Exception;
+	
+	public void crearPais(Pai pais) throws Exception;
+	
+	public void editarPais(Pai pais) throws Exception;
+	
+	public Integer maxid() throws Exception;
+	
+	public List<Estado> traerEstado() throws Exception;
+	
+	public Integer maxidCiud() throws Exception;
+	
+	public void crearCiudad(Ciudad ciud) throws Exception;
+	
+	public void editarCiudad(Ciudad ciud) throws Exception;
+	
+	public Ciudad listarCiudadPorId(int id) throws Exception;
+	
+	public List<Ciudad> listarCiudades() throws Exception;
+	
+	public Estado traerEstadoId(int id) throws Exception;
+	
+	public Integer maxidEstado() throws Exception;
+	
+	public void crearEstado(Estado e) throws Exception;
+	
+	public void crearEditaEstado(Estado e) throws Exception;
+	
+	public Integer maxidZip() throws Exception;
+	
+	public List<Zip> listarZip() throws Exception;
+	
+	public void crearZip(Zip z) throws Exception;
+	
+	public void editaZip(Zip z) throws Exception; 
+	
+	public Zip traerZipId(int id) throws Exception;
+	
+	public Integer maxidEC() throws Exception;
+	
+	public List<Estadocaso> traerListEsC() throws Exception;
+	
+	public void crearEC(Estadocaso ec) throws Exception;
+	
+	public void editarEC(Estadocaso ec) throws Exception;
+	
+	public Estadocaso traerECId(int ec) throws Exception;
+	
+	public Integer maxidDet() throws Exception;
+	
+	public List<Detalle> traerListDet() throws Exception;
+	
+	public void crearDetalle(Detalle d) throws Exception;
+	
+	public void editarDetalle(Detalle d) throws Exception;
+	
+	public Detalle traerDetId(int d) throws Exception;
+	
+	public Integer maxidRut() throws Exception;
+	
+	public List<Ruta> traerListRut() throws Exception;
+	
+	public void crearRuta(Ruta r) throws Exception;
+	
+	public void editarRuta(Ruta r) throws Exception;
+	
+	public Ruta traerRutId(int d) throws Exception;
+
+	public Integer maxidDep() throws Exception;
+	
+	public List<Dependencia> traerListDep() throws Exception;
+	
+	public void crearDep(Dependencia d) throws Exception;
+	
+	public void editarDep(Dependencia d) throws Exception;
+	
+	public Dependencia traerDepId(int d) throws Exception;
+
+	
+}

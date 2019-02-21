@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="jpa-ges" transaction-type="JTA">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<jta-data-source>java:jboss/env/jdbc/ges</jta-data-source>
+		<mapping-file>META-INF/ges-orm.xml</mapping-file>
+		<class>co.com.facturacion.modelo.Anio</class>
+		<class>co.com.facturacion.modelo.Aniocontratista</class>
+		<class>co.com.facturacion.modelo.AniocontratistaPK</class>
+		<class>co.com.facturacion.modelo.Caso</class>
+		<class>co.com.facturacion.modelo.Casoanio</class>
+		<class>co.com.facturacion.modelo.CasoanioPK</class>
+		<class>co.com.facturacion.modelo.Ciudad</class>
+		<class>co.com.facturacion.modelo.Ciudadzip</class>
+		<class>co.com.facturacion.modelo.CiudadzipPK</class>
+		<class>co.com.facturacion.modelo.Contratista</class>
+		<class>co.com.facturacion.modelo.Dependencia</class>
+		<class>co.com.facturacion.modelo.Dependiente</class>
+		<class>co.com.facturacion.modelo.DependientePK</class>
+		<class>co.com.facturacion.modelo.Detalle</class>
+		<class>co.com.facturacion.modelo.Detallefactura</class>
+		<class>co.com.facturacion.modelo.DetallefacturaPK</class>
+		<class>co.com.facturacion.modelo.Documento</class>
+		<class>co.com.facturacion.modelo.Empleado</class>
+		<class>co.com.facturacion.modelo.Estado</class>
+		<class>co.com.facturacion.modelo.Estadocaso</class>
+		<class>co.com.facturacion.modelo.Estadocivil</class>
+		<class>co.com.facturacion.modelo.Estadofactura</class>
+		<class>co.com.facturacion.modelo.Extensione</class>
+		<class>co.com.facturacion.modelo.Factura</class>
+		<class>co.com.facturacion.modelo.Formaenvio</class>
+		<class>co.com.facturacion.modelo.Formapagofactura</class>
+		<class>co.com.facturacion.modelo.Formapagotax</class>
+		<class>co.com.facturacion.modelo.Funcionario</class>
+		<class>co.com.facturacion.modelo.FuncionarioPK</class>
+		<class>co.com.facturacion.modelo.Gasto</class>
+		<class>co.com.facturacion.modelo.Novedadcaso</class>
+		<class>co.com.facturacion.modelo.Novedadtarea</class>
+		<class>co.com.facturacion.modelo.Opcionsistema</class>
+		<class>co.com.facturacion.modelo.Pago</class>
+		<class>co.com.facturacion.modelo.Pai</class>
+		<class>co.com.facturacion.modelo.Parametro</class>
+		<class>co.com.facturacion.modelo.Perfil</class>
+		<class>co.com.facturacion.modelo.Perfilestadocaso</class>
+		<class>co.com.facturacion.modelo.PerfilestadocasoPK</class>
+		<class>co.com.facturacion.modelo.Perfilopcion</class>
+		<class>co.com.facturacion.modelo.PerfilopcionPK</class>
+		<class>co.com.facturacion.modelo.Persona</class>
+		<class>co.com.facturacion.modelo.PersonaPK</class>
+		<class>co.com.facturacion.modelo.Pregunta</class>
+		<class>co.com.facturacion.modelo.Ruta</class>
+		<class>co.com.facturacion.modelo.Sexo</class>
+		<class>co.com.facturacion.modelo.Tareacaso</class>
+		<class>co.com.facturacion.modelo.Tipodocumento</class>
+		<class>co.com.facturacion.modelo.Tipogasto</class>
+		<class>co.com.facturacion.modelo.Tipoidentificacion</class>
+		<class>co.com.facturacion.modelo.Tipoparentesco</class>
+		<class>co.com.facturacion.modelo.Tipotarea</class>
+		<class>co.com.facturacion.modelo.Vehiculo</class>
+		<class>co.com.facturacion.modelo.Zip</class>
+		<class>co.com.facturacion.vistas.VFuncionario</class>
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+		<shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+		<properties>
+			<property name="hibernate.connection.driver_class" value="net.sourceforge.jtds.jdbc.Driver" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+		</properties>
+	</persistence-unit>
+</persistence>

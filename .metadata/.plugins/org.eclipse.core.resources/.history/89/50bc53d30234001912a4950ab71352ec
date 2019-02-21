@@ -1,0 +1,62 @@
+package co.com.facturacion.modelo;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.*;
+
+
+/**
+ * The persistent class for the CIUDADZIP database table.
+ * 
+ */
+@Entity
+@Table(name="CIUDADZIP")
+public class Ciudadzip implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@EmbeddedId
+	private CiudadzipPK id;
+
+	private Date fecha;
+
+	private String idfuncionario;
+
+	private int idtipofuncionario;
+
+	public Ciudadzip() {
+	}
+
+	public CiudadzipPK getId() {
+		return this.id;
+	}
+
+	public void setId(CiudadzipPK id) {
+		this.id = id;
+	}
+
+	public Date getFecha() {
+		return this.fecha;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+
+	public String getIdfuncionario() {
+		return this.idfuncionario;
+	}
+
+	public void setIdfuncionario(String idfuncionario) {
+		this.idfuncionario = idfuncionario;
+	}
+
+	public int getIdtipofuncionario() {
+		return this.idtipofuncionario;
+	}
+
+	public void setIdtipofuncionario(int idtipofuncionario) {
+		this.idtipofuncionario = idtipofuncionario;
+	}
+
+}

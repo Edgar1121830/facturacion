@@ -1,0 +1,26 @@
+package co.com.ges.servicio;
+
+import java.util.List;
+
+import javax.ejb.EJB;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+
+import co.com.ges.fachada.GesFachada;
+import co.com.ges.modelo.Pai;
+
+@Stateless
+@LocalBean
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+public class GesServicio {
+	
+	@EJB
+	GesFachada fachada;
+	
+	public List<Pai> listarPais() throws Exception{
+		return fachada.listarPais();
+	}
+
+}

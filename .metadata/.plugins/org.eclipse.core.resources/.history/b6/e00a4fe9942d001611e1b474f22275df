@@ -1,0 +1,35 @@
+#---header
+headerLogin= Login
+headerError = Error
+headerAdministracion= Administraci&oacute;n
+headerBank= Banco
+headerPais= Pa&iacute;s  
+headerCrear = Crear
+headerCiudad= Ciudad
+
+#---Lables
+labelUsuario = Usuario:
+labelPasword = Password:
+labelPais = Pais
+labelId = Codigo Pais
+labelEditar = Editar
+labelNombre = Nombre
+labelCodCiudad = Codigo Ciudad
+labelSeleccione = Seleccione...
+labelEstado = Estado
+#--Botones 
+botonAceptar = Aceptar
+botonGuarddar = Guardar
+botonSalir = Salir
+
+#-----mensajes Exito
+exitoGuardadoPais= EL PAIS HA SIDO GUARDARO
+exitoEditPais= EL PAIS HA SIDO EDITADO
+
+
+#----Mensajes Error
+errorProceso = ERROR AL BUSCAR PAISES
+errorEditarPais = ERROR AL EDITAR PAIS
+errorCamposObli = FALTAN CAMPOS OBLOGATORIOS
+errorCreaCiudad = ERROR AL CREAR CIUDAD
+errorCreaPais = ERROR AL CREAR PAIS

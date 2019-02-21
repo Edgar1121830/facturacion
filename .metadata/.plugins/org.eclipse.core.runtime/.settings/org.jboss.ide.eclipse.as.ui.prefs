@@ -1,0 +1,11 @@
+eclipse.preferences.version=1
+org.jboss.ide.eclipse.as.ui.defaultWebServer=JBoss AS 7.11466486060627
+org.jboss.ide.eclipse.as.ui.preferences.disabled.automatic.server.view=true
+org.jboss.ide.eclipse.as.ui.preferences.enabledDecorators.1=true
+org.jboss.ide.eclipse.as.ui.preferences.runtime.last.type.org.jboss.ide.eclipse.as.runtime.70=C\:\\jboss-as-7.1.1.Final
+org.jboss.ide.eclipse.as.ui.preferences.runtime.last.type.org.jboss.ide.eclipse.as.runtime.71=C\:\\jboss-as-7.1.1.Final
+org.jboss.ide.eclipse.as.ui.preferences.runtime.last.type.org.jboss.ide.eclipse.as.runtime.wildfly.120=C\:\\wildfly-15.0.1.Final
+org.jboss.ide.eclipse.as.ui.wizards.LAST_RUNTIME_CREATED=WildFly 12.0 Runtime
+org.jboss.ide.eclipse.as.ui.wizards.LAST_RUNTIME_TYPE_CREATED=org.jboss.ide.eclipse.as.runtime.wildfly.120
+org.jboss.ide.eclipse.as.ui.wizards.LAST_SERVER_CREATED=WildFly 121550580441487
+org.jboss.ide.eclipse.as.ui.wizards.LAST_SERVER_TYPE_CREATED=org.jboss.ide.eclipse.as.wildfly.120

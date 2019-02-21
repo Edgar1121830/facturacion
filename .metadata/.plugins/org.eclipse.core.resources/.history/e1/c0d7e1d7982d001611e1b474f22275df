@@ -1,0 +1,83 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/comf-template-menu.xhtml">
+	<ui:define name="head">:: GES ::</ui:define>
+	<ui:define name="body">
+		<h:body>
+			<h:form>
+				<p:messages id="messages" globalOnly="true" autoUpdate="true" closable="true" showDetail="true" showSummary="true" />
+				<br /> <br />
+				<div align="center">
+					<p:tabView>
+						<p:tab title="#{msg.headerAdministracion}">
+							<p:panel style="width:950px; height:500px" id="panelGeneral" header="#{msg.headerPais}" >
+								<div align="center">
+									<p:outputLabel for="nume" value="Codigo Pais" />
+									<p:inputText id="nume" value="#{ad.num}" disabled="true"></p:inputText>
+									<p:outputLabel for="re2" value="#{msg.labelNombre}" />
+									<p:inputText id="re2" value="#{ad.nombre}" ></p:inputText> <br/>
+									<p:commandButton value="#{msg.botonGuarddar}" action="#{ad.create()}" update="@form,paised" ajax="false"/>
+									
+									<p:dataTable id="paised" var="pa" value="#{ad.listPais}" editable="true" style="margin-bottom:20px">
+									   <p:ajax event="rowEdit" listener="#{ad.edit(pa)}" update="paised"/>
+									   <p:column headerText="#{msg.labelId}"  >
+													<h:outputText value="#{pa.id}" />
+										</p:column>
+								       <p:column headerText="#{msg.labelPais}">
+								           <p:cellEditor>
+								               <f:facet name="output"><h:outputText value="#{pa.nombre}" /></f:facet>
+								               <f:facet name="input"><p:inputText value="#{pa.nombre}" style="width:100%" label="#{msg.labelPais}"/></f:facet>
+								           </p:cellEditor>
+								       </p:column>
+								       <p:column headerText="#{msg.labelEditar}" >
+										<p:rowEditor>
+											</p:rowEditor> 
+									   </p:column>
+								   </p:dataTable>
+								</div>
+							</p:panel>
+						</p:tab>
+					</p:tabView>
+					<p:tabView>
+						<p:tab title="#{msg.headerAdministracion}">
+							<p:panel style="width:950px; height:500px" id="panelG" header="#{msg.headerCiudad}" >
+								<div align="center">
+									<p:outputLabel for="nume" value="#{msg.labelCodCiudad}" />
+									<p:inputText id="nume" value="#{ad.codC}" disabled="true" style="width:150px"/>
+									<p:outputLabel for="re2" value="#{msg.labelNombre}" style="width:150px"/>
+									<p:inputText id="re2" value="#{ad.nomCiud}" ></p:inputText>
+									<p:outputLabel for="re2" value="#{msg.labelEstado}" />
+									<p:selectOneMenu value="#{ad.codEsta}" id="selCodEs" style="width:150px">
+										<f:selectItem itemLabel="#{msg.labelSeleccione}" itemValue="0"/>
+										<f:selectItems value="#{ad.listEstado}" var="es" itemValue="#{es.id}" itemLabel="#{es.nombre}"/>
+									</p:selectOneMenu> <BR/> <BR />
+									<p:commandButton value="#{msg.botonGuarddar}" action="#{ad.crearCiudad()}" update="@form,ciud" ajax="false"/>
+									
+									<p:dataTable id="ciud" var="ciu" value="#{ad.listPais}" editable="true" style="margin-bottom:20px">
+									   <p:ajax event="rowEdit" listener="#{ad.edit(pa)}" update="paised"/>
+									   <p:column headerText="#{msg.labelId}"  >
+													<h:outputText value="#{pa.id}" />
+										</p:column>
+								       <p:column headerText="#{msg.labelPais}">
+								           <p:cellEditor>
+								               <f:facet name="output"><h:outputText value="#{pa.nombre}" /></f:facet>
+								               <f:facet name="input"><p:inputText value="#{pa.nombre}" style="width:100%" label="#{msg.labelPais}"/></f:facet>
+								           </p:cellEditor>
+								       </p:column>
+								       <p:column headerText="#{msg.labelEditar}" >
+										<p:rowEditor>
+											</p:rowEditor> 
+									   </p:column>
+								   </p:dataTable>
+								</div>
+							</p:panel>
+						</p:tab>
+					</p:tabView>
+				</div>
+			</h:form>
+		</h:body>
+	</ui:define>
+</ui:composition>

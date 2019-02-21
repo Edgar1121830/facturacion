@@ -1,0 +1,453 @@
+package co.com.ges.controller;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.component.datatable.DataTable;
+
+import co.com.ges.dto.OpcionesMenuUsuario;
+import co.com.ges.enums.AsignacionEnum;
+import co.com.ges.enums.EstadosEnum;
+import co.com.ges.modelo.Dependencia;
+import co.com.ges.modelo.Detalle;
+import co.com.ges.modelo.Estado;
+import co.com.ges.modelo.Estadocaso;
+import co.com.ges.modelo.Funcionario;
+import co.com.ges.modelo.Ruta;
+import co.com.ges.servicio.GesServicio;
+
+@ManagedBean(name="estc")
+@SessionScoped
+public class AdminEstaControl implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+
+	private Properties prop = new Properties();
+	private String user;
+	private Funcionario f = new Funcionario();
+	private DataTable dtActEC;
+	private DataTable dtActuR;
+	private DataTable dtActuD;
+	private DataTable dtActuDep;
+	private List<EstadosEnum> lienu =new ArrayList<EstadosEnum>();
+	private Estadocaso esc = new Estadocaso(); 
+	private List<AsignacionEnum> as = new ArrayList<AsignacionEnum>(); 
+	private Integer codec = 0;
+	private List<Estadocaso> estl = new ArrayList<Estadocaso>();
+	private int codDet = 0;
+	private Detalle deta = new Detalle();
+	private List<Detalle> lisdte = new ArrayList<Detalle>();
+	private int codRuta= 0;
+	private Ruta ruta = new Ruta();
+	private List<Ruta> lisRut = new ArrayList<Ruta>();
+	private List<Estadocaso> estCFilter;
+	private List<Detalle> detFilter;
+	private List<Ruta> rutFilter;
+	private int codDepe = 0;
+	private Dependencia dep = new Dependencia();
+	private List<Dependencia> lisDep = new ArrayList<Dependencia>();
+	private List<Detalle> depeFilter;
+	private List<Dependencia> depenFilter;
+	
+	@EJB
+	GesServicio servicio;
+	
+	public AdminEstaControl() {
+		super();
+		this.cargarPropiedades();
+	}
+	
+	public void cargarPropiedades(){
+		prop = new Properties();
+		try{
+			prop.load(AdministracionControl.class.getResourceAsStream("mensajes.properties"));
+			user=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(LoginControl.AUTH_KEY);
+			f =(Funcionario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(LoginControl.USERS);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@PostConstruct
+	public void cargarPermisos(){
+		@SuppressWarnings("unchecked")
+		List<OpcionesMenuUsuario> opc = (List<OpcionesMenuUsuario>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("menu");
+		try{
+			dtActEC = new DataTable();
+			dtActuR = new DataTable();
+			dtActuD = new DataTable();
+			dtActuDep = new DataTable();
+			lienu.add(EstadosEnum.ACTIVO);
+			lienu.add(EstadosEnum.INACTIVO);
+			as.add(AsignacionEnum.SI);
+			as.add(AsignacionEnum.NO);
+			cargarDatos();
+//			for(OpcionesMenuUsuario o: opc){
+//				if((o.getIdMenu().compareTo(ComponentesMenu.CONTRATO.getIdComponente())==0) 
+//						&& (o.getPermisoCodigo().compareTo(PermisosMenu.ADMCONTRATRO.getIdPermiso().intValue())==0)){
+//					if((o.getIdMenu().compareTo(ComponentesMenu.CONTRATO.getIdComponente())==0) 
+//						&& (o.getPermisoCodigo().compareTo(PermisosMenu.SUMINISTROS.getIdPermiso().intValue())==0)){
+//						
+//					}
+//				}
+//			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void cargarDatos(){
+		try{
+			dtActEC = new DataTable();
+			dtActuR = new DataTable();
+			dtActuD = new DataTable();
+			dtActuDep = new DataTable();
+			codec = servicio.maxCodEC();
+			estl = servicio.listarEC();
+			codDet = servicio.maxCodDetalle();
+			lisdte = servicio.listarDetalle();
+			codRuta = servicio.maxCodRuta();
+			lisRut = servicio.listarRuta();
+			codDepe = servicio.maxCodDep();
+			lisDep = servicio.listarDependencia();
+			estCFilter = estl;
+			detFilter = lisdte;
+			rutFilter = lisRut;
+			depenFilter = lisDep;
+			dtActEC.setValue(estl);
+			dtActuD.setValue(lisdte);
+			dtActuR.setValue(lisRut);
+			dtActuDep.setValue(lisDep);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void limpiarDatos(){
+		esc = new Estadocaso();
+		deta = new Detalle();
+		ruta = new Ruta();
+		cargarDatos();
+	}
+	
+	public void crearEstaCaso(){
+		try{
+			if(esc!=null){
+				esc.setId(codec);
+				servicio.crearEC(esc);
+				limpiarDatos();
+    			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoGuaEC")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("erroCreaed")));
+		}
+	}
+	
+	public void editarEC(Estadocaso ec){
+		try{
+			if(ec.getNombre()!=null){
+				servicio.editarEC(ec);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoEditEC")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("erroCreaed")));
+				
+		}
+	}
+	
+	public void crearDetalle(){
+		try{
+			if((deta.getDescripcion()!=null && !deta.getDescripcion().equals("")) 
+					&& !deta.getValor().equals(BigDecimal.ZERO)){
+				deta.setId(codDet);
+				servicio.crearDetalle(deta);
+				limpiarDatos();
+    			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoGuaDet")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCreDEt")));
+		}
+	}
+	
+	public void editarDetalle(Detalle d){
+		try{
+			if((d.getDescripcion()!=null && !d.getDescripcion().equals("")) 
+					&& !d.getValor().equals(BigDecimal.ZERO)){
+				servicio.editarDetalle(d);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoEditEC")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("erroEdiDEt")));
+		}
+	}
+	
+	public void crearRuta(){
+		try{
+			if((ruta.getNombrebanco()!=null && !ruta.getNombrebanco().equals("")) 
+					&& (ruta.getNumero()!=null && !ruta.getNumero().equals(""))){
+				ruta.setId(codRuta);
+				servicio.crearRuta(ruta);
+				limpiarDatos();
+    			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoGuaBan")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCreBan")));
+		}
+	}
+	
+	public void editarRuta(Ruta r){
+		try{
+			if((r.getNombrebanco()!=null && !r.getNombrebanco().equals("")) 
+					&& (r.getNumero()!=null && !r.getNumero().equals(""))){
+				servicio.editarRuta(r);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoEditBan")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("erroEdiBan")));
+		}
+	}
+	
+	public void crearDepen(){
+		try{
+			if(dep.getNombre()!=null && !dep.getNombre().equals("")){
+				dep.setId(codDepe);
+				servicio.crearDependencia(dep);
+				limpiarDatos();
+    			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoGuaDep")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCreDep")));
+		}
+	}
+	
+	public void editarDependencia(Dependencia d){
+		try{
+			if(d.getNombre()!=null && !d.getNombre().equals("")){
+				servicio.editarDependencia(d);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoEditBan")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("erroEdiBan")));
+		}
+	}
+	
+
+	public List<EstadosEnum> getLienu() {
+		return lienu;
+	}
+
+	public void setLienu(List<EstadosEnum> lienu) {
+		this.lienu = lienu;
+	}
+
+	public Estadocaso getEsc() {
+		return esc;
+	}
+
+	public void setEsc(Estadocaso esc) {
+		this.esc = esc;
+	}
+
+	public List<AsignacionEnum> getAs() {
+		return as;
+	}
+
+	public void setAs(List<AsignacionEnum> as) {
+		this.as = as;
+	}
+	
+	public Integer getCodec() {
+		return codec;
+	}
+
+	public void setCodec(Integer codec) {
+		this.codec = codec;
+	}
+
+	public List<Estadocaso> getEstl() {
+		return estl;
+	}
+
+	public void setEstl(List<Estadocaso> estl) {
+		this.estl = estl;
+	}
+
+	public int getCodDet() {
+		return codDet;
+	}
+
+	public void setCodDet(int codDet) {
+		this.codDet = codDet;
+	}
+
+	public Detalle getDeta() {
+		return deta;
+	}
+
+	public void setDeta(Detalle deta) {
+		this.deta = deta;
+	}
+
+	public List<Detalle> getLisdte() {
+		return lisdte;
+	}
+
+	public void setLisdte(List<Detalle> lisdte) {
+		this.lisdte = lisdte;
+	}
+
+	public int getCodRuta() {
+		return codRuta;
+	}
+
+	public void setCodRuta(int codRuta) {
+		this.codRuta = codRuta;
+	}
+
+	public Ruta getRuta() {
+		return ruta;
+	}
+
+	public void setRuta(Ruta ruta) {
+		this.ruta = ruta;
+	}
+
+	public List<Ruta> getLisRut() {
+		return lisRut;
+	}
+
+	public DataTable getDtActEC() {
+		return dtActEC;
+	}
+
+	public void setDtActEC(DataTable dtActEC) {
+		this.dtActEC = dtActEC;
+	}
+
+	public void setLisRut(List<Ruta> lisRut) {
+		this.lisRut = lisRut;
+	}
+
+	public List<Estadocaso> getEstCFilter() {
+		return estCFilter;
+	}
+
+	public void setEstCFilter(List<Estadocaso> estCFilter) {
+		this.estCFilter = estCFilter;
+	}
+
+	public DataTable getDtActuR() {
+		return dtActuR;
+	}
+
+	public void setDtActuR(DataTable dtActuR) {
+		this.dtActuR = dtActuR;
+	}
+
+	public List<Detalle> getDetFilter() {
+		return detFilter;
+	}
+
+	public void setDetFilter(List<Detalle> detFilter) {
+		this.detFilter = detFilter;
+	}
+
+	public DataTable getDtActuD() {
+		return dtActuD;
+	}
+
+	public void setDtActuD(DataTable dtActuD) {
+		this.dtActuD = dtActuD;
+	}
+
+	public List<Ruta> getRutFilter() {
+		return rutFilter;
+	}
+
+	public void setRutFilter(List<Ruta> rutFilter) {
+		this.rutFilter = rutFilter;
+	}
+
+	public Dependencia getDep() {
+		return dep;
+	}
+
+	public void setDep(Dependencia dep) {
+		this.dep = dep;
+	}
+
+	public List<Dependencia> getLisDep() {
+		return lisDep;
+	}
+
+	public void setLisDep(List<Dependencia> lisDep) {
+		this.lisDep = lisDep;
+	}
+
+	public List<Detalle> getDepeFilter() {
+		return depeFilter;
+	}
+
+	public void setDepeFilter(List<Detalle> depeFilter) {
+		this.depeFilter = depeFilter;
+	}
+
+	public List<Dependencia> getDepenFilter() {
+		return depenFilter;
+	}
+
+	public void setDepenFilter(List<Dependencia> depenFilter) {
+		this.depenFilter = depenFilter;
+	}
+
+	public int getCodDepe() {
+		return codDepe;
+	}
+
+	public void setCodDepe(int codDepe) {
+		this.codDepe = codDepe;
+	}
+
+	public DataTable getDtActuDep() {
+		return dtActuDep;
+	}
+
+	public void setDtActuDep(DataTable dtActuDep) {
+		this.dtActuDep = dtActuDep;
+	}
+
+}

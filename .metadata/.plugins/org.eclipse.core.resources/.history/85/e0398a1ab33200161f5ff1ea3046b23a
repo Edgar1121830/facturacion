@@ -1,0 +1,786 @@
+package co.com.ges.controller;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.component.datatable.DataTable;
+
+import co.com.ges.dto.OpcionesMenuUsuario;
+import co.com.ges.enums.AsignacionEnum;
+import co.com.ges.enums.EstadosEnum;
+import co.com.ges.modelo.Dependencia;
+import co.com.ges.modelo.Detalle;
+import co.com.ges.modelo.Estadocaso;
+import co.com.ges.modelo.Formapagotax;
+import co.com.ges.modelo.Funcionario;
+import co.com.ges.modelo.Ruta;
+import co.com.ges.modelo.Tipodocumento;
+import co.com.ges.modelo.Tipogasto;
+import co.com.ges.modelo.Tipotarea;
+import co.com.ges.servicio.GesServicio;
+
+@ManagedBean(name="estc")
+@SessionScoped
+public class AdminEstaControl implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+
+	private Properties prop = new Properties();
+	private String user;
+	private Funcionario f = new Funcionario();
+	private DataTable dtActEC;
+	private DataTable dtActuR;
+	private DataTable dtActuD;
+	private DataTable dtActuDep;
+	private DataTable dtActuTico;
+	private DataTable dtActuTg;
+	private DataTable dtActuTt;
+	private DataTable dtActuFtp;
+	private List<EstadosEnum> lienu =new ArrayList<EstadosEnum>();
+	private Estadocaso esc = new Estadocaso(); 
+	private List<AsignacionEnum> as = new ArrayList<AsignacionEnum>(); 
+	private Integer codec = 0;
+	private List<Estadocaso> estl = new ArrayList<Estadocaso>();
+	private int codDet = 0;
+	private Detalle deta = new Detalle();
+	private List<Detalle> lisdte = new ArrayList<Detalle>();
+	private int codRuta= 0;
+	private Ruta ruta = new Ruta();
+	private List<Ruta> lisRut = new ArrayList<Ruta>();
+	private List<Estadocaso> estCFilter;
+	private List<Detalle> detFilter;
+	private List<Ruta> rutFilter;
+	private int codDepe = 0;
+	private Dependencia dep = new Dependencia();
+	private List<Dependencia> lisDep = new ArrayList<Dependencia>();
+	private List<Detalle> depeFilter;
+	private List<Dependencia> depenFilter;
+	private int codTico = 0;
+	private Tipodocumento tico = new Tipodocumento();
+	private List<Tipodocumento> lisTico = new ArrayList<Tipodocumento>();
+	private List<Tipodocumento> ticoFilter;
+	private int codTigas = 0;
+	private Tipogasto tg = new Tipogasto();
+	private List<Tipogasto> lisTg = new ArrayList<Tipogasto>();
+	private List<Tipogasto> tgFilter;
+	private int codTt = 0;
+	private Tipotarea tt = new Tipotarea();
+	private List<Tipotarea> lisTt = new ArrayList<Tipotarea>();
+	private List<Tipotarea> ttFilter;
+	private int codFtp = 0;
+	private Formapagotax ftp = new Formapagotax();
+	private List<Formapagotax> lisFtp = new ArrayList<Formapagotax>();
+	private List<Formapagotax> ftpFilter;
+	
+	@EJB
+	GesServicio servicio;
+	
+	public AdminEstaControl() {
+		super();
+		this.cargarPropiedades();
+	}
+	
+	public void cargarPropiedades(){
+		prop = new Properties();
+		try{
+			prop.load(AdministracionControl.class.getResourceAsStream("mensajes.properties"));
+			user=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(LoginControl.AUTH_KEY);
+			f =(Funcionario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(LoginControl.USERS);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@PostConstruct
+	public void cargarPermisos(){
+		@SuppressWarnings("unchecked")
+		List<OpcionesMenuUsuario> opc = (List<OpcionesMenuUsuario>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("menu");
+		try{
+			dtActEC = new DataTable();
+			dtActuR = new DataTable();
+			dtActuD = new DataTable();
+			dtActuDep = new DataTable();
+			dtActuTico = new DataTable();
+			dtActuTg = new DataTable();
+			dtActuTt = new DataTable();
+			dtActuFtp = new DataTable();
+			lienu.add(EstadosEnum.ACTIVO);
+			lienu.add(EstadosEnum.INACTIVO);
+			as.add(AsignacionEnum.SI);
+			as.add(AsignacionEnum.NO);
+			cargarDatos();
+//			for(OpcionesMenuUsuario o: opc){
+//				if((o.getIdMenu().compareTo(ComponentesMenu.CONTRATO.getIdComponente())==0) 
+//						&& (o.getPermisoCodigo().compareTo(PermisosMenu.ADMCONTRATRO.getIdPermiso().intValue())==0)){
+//					if((o.getIdMenu().compareTo(ComponentesMenu.CONTRATO.getIdComponente())==0) 
+//						&& (o.getPermisoCodigo().compareTo(PermisosMenu.SUMINISTROS.getIdPermiso().intValue())==0)){
+//						
+//					}
+//				}
+//			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void cargarDatos(){
+		try{
+			dtActEC = new DataTable();
+			dtActuR = new DataTable();
+			dtActuD = new DataTable();
+			dtActuDep = new DataTable();
+			dtActuTico = new DataTable();
+			dtActuTg = new DataTable();
+			dtActuTt = new DataTable();
+			dtActuFtp = new DataTable();
+			codec = servicio.maxCodEC();
+			estl = servicio.listarEC();
+			codDet = servicio.maxCodDetalle();
+			lisdte = servicio.listarDetalle();
+			codRuta = servicio.maxCodRuta();
+			lisRut = servicio.listarRuta();
+			codDepe = servicio.maxCodDep();
+			lisDep = servicio.listarDependencia();
+			lisTico = servicio.listarTico();
+			codTico  = servicio.maxCodTico();
+			codTigas = servicio.maxCodTig();
+			lisTg = servicio.listarTg();
+			codTt = servicio.maxCodTt();
+			lisTt = servicio.listarTt();
+			ticoFilter = lisTico;
+			estCFilter = estl;
+			detFilter = lisdte;
+			rutFilter = lisRut;
+			tgFilter = lisTg;
+			ttFilter = lisTt;
+			depenFilter = lisDep;
+			dtActEC.setValue(estl);
+			dtActuD.setValue(lisdte);
+			dtActuR.setValue(lisRut);
+			dtActuDep.setValue(lisDep);
+			dtActuTico.setValue(lisTico);
+			dtActuTg.setValue(lisTg);
+			dtActuTt.setValue(lisTt);
+			codFtp = servicio.maxCodFPT();
+			lisFtp = servicio.listarFPT();
+			ftpFilter = lisFtp;
+			dtActuFtp.setValue(lisFtp);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void limpiarDatos(){
+		esc = new Estadocaso();
+		deta = new Detalle();
+		ruta = new Ruta();
+		dep = new Dependencia();
+		tico = new Tipodocumento();
+		tg = new Tipogasto();
+		tt = new Tipotarea();
+		ftp = new Formapagotax();
+		cargarDatos();
+	}
+	
+	public void crearEstaCaso(){
+		try{
+			if(esc!=null){
+				esc.setId(codec);
+				servicio.crearEC(esc);
+				limpiarDatos();
+    			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoGuaEC")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("erroCreaed")));
+		}
+	}
+	
+	public void editarEC(Estadocaso ec){
+		try{
+			if(ec.getNombre()!=null){
+				servicio.editarEC(ec);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoEditEC")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("erroCreaed")));
+				
+		}
+	}
+	
+	public void crearDetalle(){
+		try{
+			if((deta.getDescripcion()!=null && !deta.getDescripcion().equals("")) 
+					&& !deta.getValor().equals(BigDecimal.ZERO)){
+				deta.setId(codDet);
+				servicio.crearDetalle(deta);
+				limpiarDatos();
+    			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoGuaDet")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCreDEt")));
+		}
+	}
+	
+	public void editarDetalle(Detalle d){
+		try{
+			if((d.getDescripcion()!=null && !d.getDescripcion().equals("")) 
+					&& !d.getValor().equals(BigDecimal.ZERO)){
+				servicio.editarDetalle(d);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoEditEC")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("erroEdiDEt")));
+		}
+	}
+	
+	public void crearRuta(){
+		try{
+			if((ruta.getNombrebanco()!=null && !ruta.getNombrebanco().equals("")) 
+					&& (ruta.getNumero()!=null && !ruta.getNumero().equals(""))){
+				ruta.setId(codRuta);
+				servicio.crearRuta(ruta);
+				limpiarDatos();
+    			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoGuaBan")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCreBan")));
+		}
+	}
+	
+	public void editarRuta(Ruta r){
+		try{
+			if((r.getNombrebanco()!=null && !r.getNombrebanco().equals("")) 
+					&& (r.getNumero()!=null && !r.getNumero().equals(""))){
+				servicio.editarRuta(r);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoEditBan")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("erroEdiBan")));
+		}
+	}
+	
+	public void crearDepen(){
+		try{
+			if(dep.getNombre()!=null && !dep.getNombre().equals("")){
+				dep.setId(codDepe);
+				servicio.crearDependencia(dep);
+				limpiarDatos();
+    			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoGuaDep")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCreDep")));
+		}
+	}
+	
+	public void editarDependencia(Dependencia d){
+		try{
+			if(d.getNombre()!=null && !d.getNombre().equals("")){
+				servicio.editarDependencia(d);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoEditDep")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("erroEdiDep")));
+		}
+	}
+	
+	public void crearTico(){
+		try{
+			if(tico.getNombre()!=null && !tico.getNombre().equals("")){
+				tico.setId(codTico);
+				servicio.crearTico(tico);
+				limpiarDatos();
+    			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoGuaTico")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCreTico")));
+		}
+	}
+	
+	public void editarTico(Tipodocumento tp){
+		try{
+			if(tp.getNombre()!=null && !tp.getNombre().equals("")){
+				servicio.editarTico(tp);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoEditTico")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("erroEdiTico")));
+		}
+	}
+	
+	public void crearTipoGas(){
+		try{
+			if(tg.getNombre()!=null && !tg.getNombre().equals("")){
+				tg.setId(codTigas);
+				servicio.crearTg(tg);
+				limpiarDatos();
+    			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoGuaTg")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCregG")));
+		}
+	}
+	
+	public void editarTipGas(Tipogasto tg){
+		try{
+			if(tg.getNombre()!=null && !tg.getNombre().equals("")){
+				servicio.editarTig(tg);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoEditTG")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("erroEdiTg")));
+		}
+	}
+	
+	public void crearTt(){
+		try{
+			if(tt.getNombre()!=null && !tt.getNombre().equals("")){
+				tt.setId(codTt);
+				servicio.crearTt(tt);
+				limpiarDatos();
+    			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoGuaTt")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCreTt")));
+		}
+	}
+	
+	public void editarTt(Tipotarea tw){
+		try{
+			if(tw.getNombre()!=null && !tw.getNombre().equals("")){
+				servicio.editarTt(tw);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoEditTt")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("erroEdiTt")));
+		}
+	}
+	
+	public void crearFtp(){
+		try{
+			if(ftp.getNombre()!=null && !ftp.getNombre().equals("")){
+				ftp.setId(codFtp);
+				servicio.crearFTP(ftp);
+				limpiarDatos();
+    			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoGuaTt")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCreTt")));
+		}
+	}
+	
+	public void editarftp(Formapagotax fpt){
+		try{
+			if(fpt.getNombre()!=null && !fpt.getNombre().equals("")){
+				servicio.editarFTP(fpt);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoEditTt")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCamposObli")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("erroEdiTt")));
+		}
+	}
+	
+	
+	public List<EstadosEnum> getLienu() {
+		return lienu;
+	}
+
+	public void setLienu(List<EstadosEnum> lienu) {
+		this.lienu = lienu;
+	}
+
+	public Estadocaso getEsc() {
+		return esc;
+	}
+
+	public void setEsc(Estadocaso esc) {
+		this.esc = esc;
+	}
+
+	public List<AsignacionEnum> getAs() {
+		return as;
+	}
+
+	public void setAs(List<AsignacionEnum> as) {
+		this.as = as;
+	}
+	
+	public Integer getCodec() {
+		return codec;
+	}
+
+	public void setCodec(Integer codec) {
+		this.codec = codec;
+	}
+
+	public List<Estadocaso> getEstl() {
+		return estl;
+	}
+
+	public void setEstl(List<Estadocaso> estl) {
+		this.estl = estl;
+	}
+
+	public int getCodDet() {
+		return codDet;
+	}
+
+	public void setCodDet(int codDet) {
+		this.codDet = codDet;
+	}
+
+	public Detalle getDeta() {
+		return deta;
+	}
+
+	public void setDeta(Detalle deta) {
+		this.deta = deta;
+	}
+
+	public List<Detalle> getLisdte() {
+		return lisdte;
+	}
+
+	public void setLisdte(List<Detalle> lisdte) {
+		this.lisdte = lisdte;
+	}
+
+	public int getCodRuta() {
+		return codRuta;
+	}
+
+	public void setCodRuta(int codRuta) {
+		this.codRuta = codRuta;
+	}
+
+	public Ruta getRuta() {
+		return ruta;
+	}
+
+	public void setRuta(Ruta ruta) {
+		this.ruta = ruta;
+	}
+
+	public List<Ruta> getLisRut() {
+		return lisRut;
+	}
+
+	public DataTable getDtActEC() {
+		return dtActEC;
+	}
+
+	public void setDtActEC(DataTable dtActEC) {
+		this.dtActEC = dtActEC;
+	}
+
+	public void setLisRut(List<Ruta> lisRut) {
+		this.lisRut = lisRut;
+	}
+
+	public List<Estadocaso> getEstCFilter() {
+		return estCFilter;
+	}
+
+	public void setEstCFilter(List<Estadocaso> estCFilter) {
+		this.estCFilter = estCFilter;
+	}
+
+	public DataTable getDtActuR() {
+		return dtActuR;
+	}
+
+	public void setDtActuR(DataTable dtActuR) {
+		this.dtActuR = dtActuR;
+	}
+
+	public List<Detalle> getDetFilter() {
+		return detFilter;
+	}
+
+	public void setDetFilter(List<Detalle> detFilter) {
+		this.detFilter = detFilter;
+	}
+
+	public DataTable getDtActuD() {
+		return dtActuD;
+	}
+
+	public void setDtActuD(DataTable dtActuD) {
+		this.dtActuD = dtActuD;
+	}
+
+	public List<Ruta> getRutFilter() {
+		return rutFilter;
+	}
+
+	public void setRutFilter(List<Ruta> rutFilter) {
+		this.rutFilter = rutFilter;
+	}
+
+	public Dependencia getDep() {
+		return dep;
+	}
+
+	public void setDep(Dependencia dep) {
+		this.dep = dep;
+	}
+
+	public List<Dependencia> getLisDep() {
+		return lisDep;
+	}
+
+	public void setLisDep(List<Dependencia> lisDep) {
+		this.lisDep = lisDep;
+	}
+
+	public List<Detalle> getDepeFilter() {
+		return depeFilter;
+	}
+
+	public void setDepeFilter(List<Detalle> depeFilter) {
+		this.depeFilter = depeFilter;
+	}
+
+	public List<Dependencia> getDepenFilter() {
+		return depenFilter;
+	}
+
+	public void setDepenFilter(List<Dependencia> depenFilter) {
+		this.depenFilter = depenFilter;
+	}
+
+	public int getCodDepe() {
+		return codDepe;
+	}
+
+	public void setCodDepe(int codDepe) {
+		this.codDepe = codDepe;
+	}
+
+	public DataTable getDtActuDep() {
+		return dtActuDep;
+	}
+
+	public void setDtActuDep(DataTable dtActuDep) {
+		this.dtActuDep = dtActuDep;
+	}
+
+	public DataTable getDtActuTico() {
+		return dtActuTico;
+	}
+
+	public void setDtActuTico(DataTable dtActuTico) {
+		this.dtActuTico = dtActuTico;
+	}
+
+	public int getCodTico() {
+		return codTico;
+	}
+
+	public void setCodTico(int codTico) {
+		this.codTico = codTico;
+	}
+
+	public Tipodocumento getTico() {
+		return tico;
+	}
+
+	public void setTico(Tipodocumento tico) {
+		this.tico = tico;
+	}
+
+	public List<Tipodocumento> getLisTico() {
+		return lisTico;
+	}
+
+	public void setLisTico(List<Tipodocumento> lisTico) {
+		this.lisTico = lisTico;
+	}
+
+	public List<Tipodocumento> getTicoFilter() {
+		return ticoFilter;
+	}
+
+	public void setTicoFilter(List<Tipodocumento> ticoFilter) {
+		this.ticoFilter = ticoFilter;
+	}
+
+	public int getCodTigas() {
+		return codTigas;
+	}
+
+	public void setCodTigas(int codTigas) {
+		this.codTigas = codTigas;
+	}
+
+	public Tipogasto getTg() {
+		return tg;
+	}
+
+	public void setTg(Tipogasto tg) {
+		this.tg = tg;
+	}
+
+	public List<Tipogasto> getLisTg() {
+		return lisTg;
+	}
+
+	public void setLisTg(List<Tipogasto> lisTg) {
+		this.lisTg = lisTg;
+	}
+
+	public List<Tipogasto> getTgFilter() {
+		return tgFilter;
+	}
+
+	public void setTgFilter(List<Tipogasto> tgFilter) {
+		this.tgFilter = tgFilter;
+	}
+
+	public DataTable getDtActuTg() {
+		return dtActuTg;
+	}
+
+	public void setDtActuTg(DataTable dtActuTg) {
+		this.dtActuTg = dtActuTg;
+	}
+
+	public DataTable getDtActuTt() {
+		return dtActuTt;
+	}
+
+	public void setDtActuTt(DataTable dtActuTt) {
+		this.dtActuTt = dtActuTt;
+	}
+
+	public int getCodTt() {
+		return codTt;
+	}
+
+	public void setCodTt(int codTt) {
+		this.codTt = codTt;
+	}
+
+	public Tipotarea getTt() {
+		return tt;
+	}
+
+	public void setTt(Tipotarea tt) {
+		this.tt = tt;
+	}
+
+	public List<Tipotarea> getLisTt() {
+		return lisTt;
+	}
+
+	public void setLisTt(List<Tipotarea> lisTt) {
+		this.lisTt = lisTt;
+	}
+
+	public List<Tipotarea> getTtFilter() {
+		return ttFilter;
+	}
+
+	public void setTtFilter(List<Tipotarea> ttFilter) {
+		this.ttFilter = ttFilter;
+	}
+
+	public DataTable getDtActuFtp() {
+		return dtActuFtp;
+	}
+
+	public void setDtActuFtp(DataTable dtActuFtp) {
+		this.dtActuFtp = dtActuFtp;
+	}
+
+	public int getCodFtp() {
+		return codFtp;
+	}
+
+	public void setCodFtp(int codFtp) {
+		this.codFtp = codFtp;
+	}
+
+	public Formapagotax getFtp() {
+		return ftp;
+	}
+
+	public void setFtp(Formapagotax ftp) {
+		this.ftp = ftp;
+	}
+
+	public List<Formapagotax> getLisFtp() {
+		return lisFtp;
+	}
+
+	public void setLisFtp(List<Formapagotax> lisFtp) {
+		this.lisFtp = lisFtp;
+	}
+
+	public List<Formapagotax> getFtpFilter() {
+		return ftpFilter;
+	}
+
+	public void setFtpFilter(List<Formapagotax> ftpFilter) {
+		this.ftpFilter = ftpFilter;
+	}
+
+}
+

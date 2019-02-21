@@ -1,0 +1,424 @@
+package co.com.ges.bean;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import co.com.ges.fachada.GesFachada;
+import co.com.ges.modelo.Ciudad;
+import co.com.ges.modelo.Detalle;
+import co.com.ges.modelo.Estado;
+import co.com.ges.modelo.Estadocaso;
+import co.com.ges.modelo.Pai;
+import co.com.ges.modelo.Zip;
+
+@Stateless
+@LocalBean
+@TransactionManagement(TransactionManagementType.CONTAINER)
+public class GesBean implements GesFachada{
+
+	@PersistenceContext(unitName="jpa-ges")
+	private EntityManager em;
+	
+	public GesBean() {
+		super();
+	}
+
+	@Override
+	public List<Pai> listarPais() throws Exception {
+		List<Pai> pais = new ArrayList<Pai>();
+		 
+		Query q = em.createNamedQuery(Pai.LISTAR_PAIS);
+		pais = q.getResultList();
+		
+		return pais;
+	}
+
+	@Override
+	public void crearPais(Pai pais) throws Exception {
+		if(pais!=null){
+			em.persist(pais);
+			em.flush();
+		}
+	}
+
+	@Override
+	public void editarPais(Pai pais) throws Exception {
+		Pai p = new Pai();
+		List<Object[]> obj = new ArrayList<Object[]>();
+		if(pais!=null){
+			p = listarPaisPorId(pais.getId());
+			if(p.getId()>0){
+				em.merge(pais);
+				em.flush();
+			}
+		}
+		
+	}
+
+	@Override
+	public Pai listarPaisPorId(int id) throws Exception {
+		List<Pai> obj = new ArrayList<Pai>();
+		Pai pais = new Pai();
+		if(id>0){
+			Query q = em.createNamedQuery(Pai.LISTAR_PAIS_POR_ID).setParameter("id", id);
+			obj = q.getResultList();
+			if(obj.size()>0){
+				for(Pai o: obj){
+					pais = new Pai();
+					pais.setId(o.getId());
+					pais.setNombre(o.getNombre());
+				}
+			}
+		}
+		
+		return pais;
+	}
+
+	@Override
+	public Integer maxid() throws Exception {
+		Integer p = new Integer(0);
+		Query q = em.createNamedQuery(Pai.MAX_PAIS);
+		
+		p =(Integer) q.getSingleResult();
+		
+		return p;
+	}
+
+	@Override
+	public List<Estado> traerEstado() throws Exception {
+		List<Estado> esta = new ArrayList<Estado>();
+		
+		Query q = em.createNamedQuery(Estado.TRAER_ESTADO);
+		esta = q.getResultList();
+		
+		return esta;
+	}
+
+	@Override
+	public Integer maxidCiud() throws Exception {
+		Integer p = new Integer(0);
+		Query q = em.createNamedQuery(Ciudad.TRAER_AMX_ID);
+		
+		p =(Integer) q.getSingleResult();
+		
+		return p;
+	}
+
+	@Override
+	public void crearCiudad(Ciudad ciud) throws Exception {
+		if(ciud!=null){
+			em.persist(ciud);
+			em.flush();
+		}
+		
+	}
+
+	@Override
+	public void editarCiudad(Ciudad ciud) throws Exception {
+		Ciudad p = new Ciudad();
+		List<Object[]> obj = new ArrayList<Object[]>();
+		String formato = "yyyy-MM-dd";
+		if(ciud!=null){
+			p = listarCiudadPorId(ciud.getId());
+			if(p.getId()>0){
+				ciud.setFecha(p.getFecha());
+				em.merge(ciud);
+				em.flush();
+			}
+		}
+		
+	}
+
+	@Override
+	public Ciudad listarCiudadPorId(int id) throws Exception {
+		List<Ciudad> obj = new ArrayList<Ciudad>();
+		Ciudad ciudad = new Ciudad();
+		if(id>0){
+			Query q = em.createNamedQuery(Ciudad.CIUDAD_X_ID).setParameter("id", id);
+			obj = q.getResultList();
+			if(obj.size()>0){
+				for(Ciudad o: obj){
+					ciudad = new Ciudad();
+					ciudad.setId(o.getId());
+					ciudad.setNombre(o.getNombre());
+					ciudad.setIdestado(o.getIdestado());
+					ciudad.setFecha(o.getFecha());
+					ciudad.setIdtipofuncionario(o.getIdtipofuncionario());
+				}
+			}
+		}
+		
+		return ciudad;
+	}
+
+	@Override
+	public List<Ciudad> listarCiudades() throws Exception {
+		List<Ciudad> ciudad = new ArrayList<Ciudad>();
+		 
+		Query q = em.createNamedQuery(Ciudad.LISTAR_CIUDAD);
+		ciudad = q.getResultList();
+		
+		return ciudad;
+	}
+
+	@Override
+	public Estado traerEstadoId(int id) throws Exception {
+		List<Estado> obj = new ArrayList<Estado>();
+		Estado estado = new Estado();
+		if(id>0){
+			Query q = em.createNamedQuery(Estado.TRAER_ESTADO_ID).setParameter("id", id);
+			obj = q.getResultList();
+			if(obj.size()>0){
+				for(Estado o: obj){
+					estado = new Estado();
+					estado.setId(o.getId());
+					estado.setNombre(o.getNombre());
+					estado.setAbreviatura(o.getAbreviatura());
+					estado.setIdpais(o.getIdpais());
+				}
+			}
+		}
+		
+		return estado;
+	}
+
+	@Override
+	public Integer maxidEstado() throws Exception {
+		Integer p = new Integer(0);
+		Query q = em.createNamedQuery(Estado.TRAER_ESTADO_ID_MAX);
+		
+		p =(Integer) q.getSingleResult();
+		
+		return p;
+	}
+
+	@Override
+	public void crearEstado(Estado e) throws Exception {
+		if(e.getId()>0){
+			em.persist(e);
+			em.flush();
+		}
+		
+	}
+
+	@Override
+	public void crearEditaEstado(Estado e) throws Exception {
+		Estado p = new Estado();
+		List<Object[]> obj = new ArrayList<Object[]>();
+		if(e!=null){
+			p = traerEstadoId(e.getId());
+			if(p.getId()>0){
+				em.merge(e);
+				em.flush();
+			}
+		}
+		
+	}
+
+	@Override
+	public Integer maxidZip() throws Exception {
+		Integer p = new Integer(0);
+		Query q = em.createNamedQuery(Zip.TRAER_ZMX_ID);
+		
+		p =(Integer) q.getSingleResult();
+		
+		return p;
+	}
+
+	@Override
+	public List<Zip> listarZip() throws Exception {
+		List<Zip> pais = new ArrayList<Zip>();
+		 
+		Query q = em.createNamedQuery(Zip.LISTAR_ZIP);
+		pais = q.getResultList();
+		
+		return pais;
+	}
+
+	@Override
+	public void crearZip(Zip z) throws Exception {
+		if(z.getId()>0){
+			em.persist(z);
+			em.flush();
+		}
+	}
+
+	@Override
+	public void editaZip(Zip z) throws Exception {
+		Zip p = new Zip();
+		List<Object[]> obj = new ArrayList<Object[]>();
+		String formato = "yyyy-MM-dd";
+		if(z!=null){
+			p = traerZipId(z.getId());
+			if(p.getId()>0){
+				SimpleDateFormat f = new SimpleDateFormat(formato);
+				String fecha = f.format(new Date());
+				Date dg = f.parse(fecha);
+				z.setFecha(dg);
+				em.merge(z);
+				em.flush();
+			}
+		}
+	}
+
+	@Override
+	public Zip traerZipId(int id) throws Exception {
+		List<Zip> obj = new ArrayList<Zip>();
+		Zip zip = new Zip();
+		if(id>0){
+			Query q = em.createNamedQuery(Zip.ZIP_X_ID).setParameter("id", id);
+			obj = q.getResultList();
+			if(obj.size()>0){
+				for(Zip o: obj){
+					zip = new Zip();
+					zip.setId(o.getId());
+					zip.setFecha(o.getFecha());
+					zip.setIdfuncionario(o.getIdfuncionario());
+					zip.setIdtipofuncionario(o.getIdtipofuncionario());
+					zip.setZipcode(o.getZipcode());
+				}
+			}
+		}
+		
+		return zip;
+	}
+
+	@Override
+	public Integer maxidEC() throws Exception {
+		Integer p = new Integer(0);
+		Query q = em.createNamedQuery(Estadocaso.ID_MAX);
+		
+		p =(Integer) q.getSingleResult();
+		
+		return p;
+	}
+
+	@Override
+	public List<Estadocaso> traerListEsC() throws Exception {
+		List<Estadocaso> ec = new ArrayList<Estadocaso>();
+		 
+		Query q = em.createNamedQuery(Estadocaso.TRAER_EST_CAS);
+		ec = q.getResultList();
+		
+		return ec;
+	}
+
+	@Override
+	public void crearEC(Estadocaso ec) throws Exception {
+		if(ec!=null){
+			em.persist(ec);
+			em.flush();
+		}
+		
+	}
+
+	@Override
+	public void editarEC(Estadocaso ec) throws Exception {
+		Estadocaso p = new Estadocaso();
+		List<Object[]> obj = new ArrayList<Object[]>();
+		if(ec!=null){
+			p = traerECId(ec.getId());
+			if(p.getId()>0){
+				em.merge(ec);
+				em.flush();
+			}
+		}
+		
+	}
+
+	@Override
+	public Estadocaso traerECId(int ec) throws Exception {
+		List<Estadocaso> obj = new ArrayList<Estadocaso>();
+		Estadocaso est = new Estadocaso();
+		if(ec>0){
+			Query q = em.createNamedQuery(Estadocaso.TRAER_EST_CAS_ID).setParameter("id", ec);
+			obj = q.getResultList();
+			if(obj.size()>0){
+				for(Estadocaso o: obj){
+					est = new Estadocaso();
+					est.setId(o.getId());
+					est.setNombre(o.getNombre());
+					est.setAsignacion(o.getAsignacion());
+					est.setEstado(o.getEstado());
+				}
+			}
+		}
+		
+		return est;
+		
+	}
+
+	@Override
+	public Integer maxidDet() throws Exception {
+		Integer p = new Integer(0);
+		Query q = em.createNamedQuery(Detalle.ID_MAX);
+		
+		p =(Integer) q.getSingleResult();
+		
+		return p;
+	}
+
+	@Override
+	public List<Detalle> traerListDet() throws Exception {
+		List<Detalle> ec = new ArrayList<Detalle>();
+		 
+		Query q = em.createNamedQuery(Detalle.TRAER_DET);
+		ec = q.getResultList();
+		
+		return ec;
+	}
+
+	@Override
+	public void crearDetalle(Detalle d) throws Exception {
+		if(d.getId()>0){
+			em.persist(d);
+			em.flush();
+		}
+	}
+
+	@Override
+	public void editarDetalle(Detalle d) throws Exception {
+		Detalle de = new Detalle();
+		List<Object[]> obj = new ArrayList<Object[]>();
+		if(d!=null){
+			de = traerDetId(d.getId());
+			if(de.getId()>0){
+				em.merge(d);
+				em.flush();
+			}
+		}
+	}
+
+	@Override
+	public Detalle traerDetId(int d) throws Exception {
+		List<Detalle> obj = new ArrayList<Detalle>();
+		Detalle det = new Detalle();
+		if(d>0){
+			Query q = em.createNamedQuery(Detalle.TRAER_DET_ID).setParameter("id", d);
+			obj = q.getResultList();
+			if(obj.size()>0){
+				for(Detalle o: obj){
+					det = new Detalle();
+					det.setId(o.getId());
+					det.setDescripcion(o.getDescripcion());
+					det.setValor(o.getValor());
+				}
+			}
+		}
+		
+		return det;
+	}
+
+
+	
+}

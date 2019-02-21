@@ -1,0 +1,257 @@
+package co.com.comfaboy.contratacion.controller;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
+
+import org.primefaces.event.MenuActionEvent;
+import org.primefaces.model.menu.MenuItem;
+
+import co.com.comfaboy.contratacion.util.Meses;
+
+
+
+
+
+@ManagedBean(name="prin")
+@SessionScoped
+public class PrincipalControl implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+	private String usLoged;
+	private List<Meses>listaPeriodos;
+	private List<Meses>listaSemestres;
+	private List<Meses>ListaTrimestres;
+	private List<Meses>listaTipoPeriodo;
+	private List<Integer> listYears;
+	private int periodo;
+	private int cont=0;
+	
+	
+
+	public PrincipalControl() {
+		listaPeriodos=new ArrayList<Meses>();
+		listYears=new ArrayList<Integer>();
+		Calendar c=Calendar.getInstance();
+		int yearAct=c.get(Calendar.YEAR);
+		for(int k=2007;k<=yearAct;k++){
+			listYears.add(k);
+		}
+		listaSemestres=new ArrayList<Meses>();
+		ListaTrimestres=new ArrayList<Meses>();
+		listaTipoPeriodo = new ArrayList<Meses>();
+		listaTipoPeriodo.add(new Meses("Mensuales", 1));
+		listaTipoPeriodo.add(new Meses("Trimestral", 2));
+		listaTipoPeriodo.add(new Meses("Semestral", 3));
+		listaTipoPeriodo.add(new Meses("Anual",4));
+		
+	}
+	 public void cambio(ValueChangeEvent e){ 
+		 	listaPeriodos.clear();
+			listaPeriodos.add(new Meses("Enero",1));listaPeriodos.add(new Meses("Febrero",2));listaPeriodos.add(new Meses("Marzo",3));listaPeriodos.add(new Meses("Abril",4));
+			listaPeriodos.add(new Meses("Mayo",5));listaPeriodos.add(new Meses("Junio",6));listaPeriodos.add(new Meses("Julio",7));listaPeriodos.add(new Meses("Agosto",8));
+			listaPeriodos.add(new Meses("Septiembre",9));listaPeriodos.add(new Meses("Octubre",10));listaPeriodos.add(new Meses("Noviembre",11));listaPeriodos.add(new Meses("Diciembre",12));
+		 Calendar c=Calendar.getInstance();
+		 int year=c.get(Calendar.YEAR);
+		 if((Integer)e.getNewValue()==0){
+			 listaPeriodos.clear();
+			 listaSemestres.clear();
+			 ListaTrimestres.clear();
+		 }else{
+			 if(year==(Integer)e.getNewValue()){
+				 c.setTime(new Date());
+					int perdiodoActual=c.get(Calendar.MONTH);
+					List<Meses>lsAux=new ArrayList<Meses>();
+					for(int cont=perdiodoActual;cont<listaPeriodos.size();cont++){
+						lsAux.add(listaPeriodos.get(cont));
+					}
+						listaPeriodos.removeAll(lsAux);
+						
+						//listaSemestres=new ArrayList<Meses>();
+						listaSemestres.clear();
+						Calendar hoy=Calendar.getInstance();
+						if(hoy.get(Calendar.MONTH)+1==7)
+							listaSemestres.add(new Meses("Junio",6));
+						else if(hoy.get(Calendar.MONTH)+1<6)
+							listaSemestres.clear();
+						/*else if(hoy.get(Calendar.MONTH)+1==12)
+							listaSemestres.add(new Meses("Diciembre",12));*/
+						else if(hoy.get(Calendar.MONTH)+1>7&&hoy.get(Calendar.MONTH)+1<=12)
+							listaSemestres.add(new Meses("Junio",6));
+						
+						
+						//ListaTrimestres=new ArrayList<Meses>();
+						ListaTrimestres.clear();
+						if(hoy.get(Calendar.MONTH)+1==4)
+							ListaTrimestres.add(new Meses("1er trimestre",3));
+						else if(hoy.get(Calendar.MONTH)+1<3)
+							ListaTrimestres.clear();
+						else if(hoy.get(Calendar.MONTH)+1==7){
+							ListaTrimestres.add(new Meses("1er trimestre",3));
+							ListaTrimestres.add(new Meses("2do trimestre",6));
+						}
+						else if(hoy.get(Calendar.MONTH)+1>4&&hoy.get(Calendar.MONTH)+1<=6){
+							ListaTrimestres.add(new Meses("1er trimestre",3));
+						}
+						else if(hoy.get(Calendar.MONTH)+1==10){
+							ListaTrimestres.add(new Meses("1er trimestre",3));
+							ListaTrimestres.add(new Meses("2do trimestre",6));
+							ListaTrimestres.add(new Meses("3er trimestre",9));
+						}else if(hoy.get(Calendar.MONTH)+1>7&&hoy.get(Calendar.MONTH)+1<=9){
+							ListaTrimestres.add(new Meses("1er trimestre",3));
+							ListaTrimestres.add(new Meses("2do trimestre",6));
+						}
+						else if(hoy.get(Calendar.MONTH)+1>9&&hoy.get(Calendar.MONTH)+1<=12){
+							ListaTrimestres.add(new Meses("1er trimestre",3));
+							ListaTrimestres.add(new Meses("2do trimestre",6));
+							ListaTrimestres.add(new Meses("3er trimestre",9));
+						}
+						
+						listaTipoPeriodo = new ArrayList<Meses>();
+						listaTipoPeriodo.add(new Meses("Mensuales", 1));
+						listaTipoPeriodo.add(new Meses("Trimestral", 2));
+						listaTipoPeriodo.add(new Meses("Semestral", 3));
+						listaTipoPeriodo.add(new Meses("Anual",4));
+				 }else{
+					 listaSemestres.clear();
+					 ListaTrimestres.clear();
+					 listaSemestres.add(new Meses("Junio",6));
+					 listaSemestres.add(new Meses("Diciembre",12));
+					 ListaTrimestres.add(new Meses("1er trimestre",3));
+					 ListaTrimestres.add(new Meses("2do trimestre",6));
+					 ListaTrimestres.add(new Meses("3er trimestre",9));
+					 ListaTrimestres.add(new Meses("4to trimestre",12));
+					 
+				 }
+		 }
+	 }
+	 
+	 public void opcionMenu(ActionEvent event){
+		 try{
+			 ContratosControl control = (ContratosControl) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("contrat");
+			 if(control!=null){
+				 control.setActive(true);
+				 control.setActivedos(true);
+			 }
+			 ServiciosControl servicios = (ServiciosControl) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("servi");
+			 if(servicios!=null){
+				 servicios.setActive(true);
+				 servicios.setActivedos(true);
+			 }
+			 ObraControl obra=(ObraControl) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("obra");
+			 if(obra!=null){
+				 obra.setActive(true);
+				 obra.setActivedos(true);
+			 }
+			 ConsultoriaControl consultoria= (ConsultoriaControl) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("consul");
+			 if(consultoria!=null){
+				 consultoria.setActive(true);
+				 consultoria.setActivedos(true);
+			 }
+			 
+			 MenuItem menuItem = ((MenuActionEvent) event).getMenuItem();
+			 String url=menuItem.getParams().get("url").get(0);
+			 if(cont==0){
+				 FacesContext.getCurrentInstance().getExternalContext().redirect(".."+url);
+				 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("repo");
+				 cont=1;
+			 }else{
+					 FacesContext.getCurrentInstance().getExternalContext().redirect("../"+".."+url);
+					 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("repo");
+					 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("rots");
+			 }
+		 }catch (Exception e) {
+			e.printStackTrace();
+		}
+	 }
+	 
+	 public void logout(){
+		 try{
+			 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove(LoginControl.AUTH_KEY);
+			 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("log");
+			 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("contrat");
+			 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("obra");
+			 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("servi");
+			 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("consul");
+			 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("inter");
+			 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("prin");
+			 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("concon");
+			 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("conord");
+			 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("intcon");
+			 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("intor");
+			 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("obracon");
+			 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("obraor");
+			 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("sercon");
+			 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("serord");
+			 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("sumcon");
+			 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("suor");
+			 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("pol");
+			 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("repo");
+			 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("edtc");
+			 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("rots");
+			 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("ots");
+			 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("admUser");
+			 FacesContext.getCurrentInstance().getExternalContext().redirect("../../login/login.faces");
+		 }catch (Exception e) {
+			e.printStackTrace();
+		}
+	 }
+
+	
+	public int getPeriodo() {
+		return periodo;
+	}
+	public String getUsLoged() {
+		return usLoged;
+	}
+
+	public List<Meses> getListaPeriodos() {
+		return listaPeriodos;
+	}
+
+	public void setPeriodo(int periodo) {
+		this.periodo = periodo;
+	}
+
+	public List<Meses> getListaSemestres() {
+		return listaSemestres;
+	}
+
+	public void setListaSemestres(List<Meses> listaSemestres) {
+		this.listaSemestres = listaSemestres;
+	}
+
+	public List<Meses> getListaTrimestres() {
+		return ListaTrimestres;
+	}
+
+	public void setListaTrimestres(List<Meses> listaTrimestres) {
+		ListaTrimestres = listaTrimestres;
+	}
+
+	public List<Meses> getListaTipoPeriodo() {
+		return listaTipoPeriodo;
+	}
+
+	public void setListaTipoPeriodo(List<Meses> listaTipoPeriodo) {
+		this.listaTipoPeriodo = listaTipoPeriodo;
+	}
+
+	public List<Integer> getListYears() {
+		return listYears;
+	}
+
+	public void setListYears(List<Integer> listYears) {
+		this.listYears = listYears;
+	}
+	
+	
+}
+

@@ -1,0 +1,335 @@
+package co.com.ges.controller;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Properties;
+
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.event.RowEditEvent;
+
+import co.com.ges.dto.OpcionesMenuUsuario;
+import co.com.ges.enums.ComponentesMenu;
+import co.com.ges.enums.PermisosMenu;
+import co.com.ges.modelo.Ciudad;
+import co.com.ges.modelo.Estado;
+import co.com.ges.modelo.Funcionario;
+import co.com.ges.modelo.Pai;
+import co.com.ges.servicio.GesServicio;
+
+@ManagedBean(name="ad")
+@SessionScoped
+public class AdministracionControl implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+	
+	private List<Pai> listPais = new ArrayList<Pai>();
+	private Properties prop = new Properties();
+	private String user;
+	private boolean permisosCreate = false;
+	private Pai paisNew = new Pai();
+	private int num = 0;
+	private String nombre;
+	private int codC=0;
+	private String nomCiud;
+	private int codEsta=0;
+	private List<Estado> listEstado = new ArrayList<Estado>();
+	private Funcionario f = new Funcionario();
+	private List<Ciudad> ciud = new ArrayList<Ciudad>();
+	private DataTable dtActu;
+	private List<Ciudad> contFilter;
+	private Estado estado = new Estado();
+	private int codEst=0;
+	private List<Estado> contFilter;
+	
+	
+	@EJB
+	GesServicio servicio;
+	
+	public AdministracionControl() {
+		super();
+		this.cargarPropiedades();
+	}
+	
+	public void cargarPropiedades(){
+		prop = new Properties();
+		try{
+			prop.load(AdministracionControl.class.getResourceAsStream("mensajes.properties"));
+			user=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(LoginControl.AUTH_KEY);
+			f =(Funcionario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(LoginControl.USERS);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@PostConstruct
+	public void cargarPermisos(){
+		@SuppressWarnings("unchecked")
+		List<OpcionesMenuUsuario> opc = (List<OpcionesMenuUsuario>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("menu");
+		try{
+			dtActu = new DataTable();
+			cargarDatos();
+//			for(OpcionesMenuUsuario o: opc){
+//				if((o.getIdMenu().compareTo(ComponentesMenu.CONTRATO.getIdComponente())==0) 
+//						&& (o.getPermisoCodigo().compareTo(PermisosMenu.ADMCONTRATRO.getIdPermiso().intValue())==0)){
+//					if((o.getIdMenu().compareTo(ComponentesMenu.CONTRATO.getIdComponente())==0) 
+//						&& (o.getPermisoCodigo().compareTo(PermisosMenu.SUMINISTROS.getIdPermiso().intValue())==0)){
+//						
+//					}
+//				}
+//			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void cargarDatos(){
+		try{
+			dtActu = new DataTable();
+			contFilter = new ArrayList<Ciudad>();
+			listPais = servicio.listarPais();
+			num = servicio.maxId();
+			listEstado = servicio.traerEstado();
+			codC = servicio.maxCodCiu();
+			ciud = servicio.listarCiudad();
+			dtActu.setValue(ciud);
+			contFilter = ciud;
+			codEst = servicio.maxCodEst();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void edit(Pai p) {
+		try{
+			if(p!=null){
+				servicio.editarPais(p);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoEditPais")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorEditarPais")));
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorEditarPais")));
+		}
+    }
+	
+	public void limpiarDatos(){
+		nombre = null;
+		nomCiud = null;
+		codEsta = 0;
+		cargarDatos();
+	}
+	
+	public void active(){
+		permisosCreate = true;
+	}
+	
+	public void cerrar(){
+		permisosCreate = false;
+	}
+	
+    public void create() {
+    	try{
+    		if(nombre!=null && !nombre.equals("")){
+    			paisNew.setId(num);
+    			paisNew.setNombre(nombre);
+    			servicio.crearPais(paisNew);
+    			limpiarDatos();
+    			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoEditPais")));
+    		}else{
+    			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("errorCamposObli")));
+    		}
+    	}catch(Exception e){
+    		e.printStackTrace();
+    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCreaPais")));
+    	}
+    }
+    
+    public void crearCiudad(){
+    	try{
+    		if((nomCiud!=null && !nomCiud.equals("")) && codEsta>0){
+    			Ciudad c  = new Ciudad();
+    			c.setId(codC);
+    			c.setFecha(new Date());
+    			c.setNombre(nomCiud);
+    			c.setIdestado(codEsta);
+    			c.setIdfuncionario(user);
+    			c.setIdtipofuncionario(f.getIdperfil());
+    			servicio.crearCiudad(c);
+    			limpiarDatos();
+    			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoGuardadoCiu")));
+    		}
+    	}catch(Exception e){
+    		e.printStackTrace();
+    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorCreaCiudad")));
+    	}
+    }
+    
+    public void editCiudad(Ciudad p) {
+		try{
+			if(p!=null){
+				p.setIdfuncionario(user);
+				servicio.editarCiudad(p);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoEditCiudad")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorEditarCiu")));
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorEditarPais")));
+		}
+    }
+    
+    public void crearEstado(){
+    	try{
+    		if((estado.getNombre()!=null && !estado.getNombre().equals("")) && (estado.getIdpais()>0)){
+    			servicio.crearEstado(estado);
+    			limpiarDatos();
+    			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoEditCiudad")));
+    		}
+    	}catch(Exception e){
+    		e.printStackTrace();
+    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorEstado")));
+    	}
+    }
+    
+    public void editEstado(Estado es) {
+		try{
+			if(es!=null){
+				servicio.editarEstado(es);
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"",prop.getProperty("exitoEditEst")));
+			}else{
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorEditarEst")));
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"",prop.getProperty("errorEditarEst")));
+		}
+    }
+	
+	public List<Pai> getListPais() {
+		return listPais;
+	}
+
+	public void setListPais(List<Pai> listPais) {
+		this.listPais = listPais;
+	}
+
+	public boolean isPermisosCreate() {
+		return permisosCreate;
+	}
+
+	public void setPermisosCreate(boolean permisosCreate) {
+		this.permisosCreate = permisosCreate;
+	}
+
+	public Pai getPaisNew() {
+		return paisNew;
+	}
+
+	public void setPaisNew(Pai paisNew) {
+		this.paisNew = paisNew;
+	}
+
+	public int getNum() {
+		return num;
+	}
+
+	public void setNum(int num) {
+		this.num = num;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public int getCodC() {
+		return codC;
+	}
+
+	public void setCodC(int codC) {
+		this.codC = codC;
+	}
+
+	public String getNomCiud() {
+		return nomCiud;
+	}
+
+	public void setNomCiud(String nomCiud) {
+		this.nomCiud = nomCiud;
+	}
+
+	public List<Estado> getListEstado() {
+		return listEstado;
+	}
+
+	public void setListEstado(List<Estado> listEstado) {
+		this.listEstado = listEstado;
+	}
+
+	public int getCodEsta() {
+		return codEsta;
+	}
+
+	public void setCodEsta(int codEsta) {
+		this.codEsta = codEsta;
+	}
+
+	public List<Ciudad> getCiud() {
+		return ciud;
+	}
+
+	public void setCiud(List<Ciudad> ciud) {
+		this.ciud = ciud;
+	}
+	
+	public DataTable getDtActu() {
+		return dtActu;
+	}
+
+	public void setDtActu(DataTable dtActu) {
+		this.dtActu = dtActu;
+	}
+	
+	public List<Ciudad> getContFilter() {
+		return contFilter;
+	}
+
+	public void setContFilter(List<Ciudad> contFilter) {
+		this.contFilter = contFilter;
+	}
+
+	public Estado getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Estado estado) {
+		this.estado = estado;
+	}
+
+	public int getCodEst() {
+		return codEst;
+	}
+
+	public void setCodEst(int codEst) {
+		this.codEst = codEst;
+	}
+
+}
